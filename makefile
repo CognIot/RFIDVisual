@@ -16,41 +16,52 @@ GTKLIB =`pkg-config --cflags --libs gtk+-3.0`
 PTHREAD=-pthread
 
 # Define the target directories.
-TARGETDIR_gladewin=.
+TARGETDIR=build
 
 
-all: $(TARGETDIR_gladewin)/gladewin
+all: $(TARGETDIR)/rfidVisual
 
-## Target: gladewin
-OBJS_gladewin =  \
-	$(TARGETDIR_gladewin)/main.o
-USERLIBS_gladewin =   
-DEPLIBS_gladewin =  
-LDLIBS_gladewin = $(PTHREAD) $(GTKLIB) -export-dynamic
+
+# ----------------------------------------------------------------------------------------------------------------
+#       Common Objects
+# ----------------------------------------------------------------------------------------------------------------
+OBJS_common = \
+	$(TARGETDIR_ALL)/rfid.o
+	
+## Target: rfidVisual
+OBJS_rfidVisual =  \
+	$(TARGETDIR_gladewin)/rfidVisual.o
+USERLIBS_rfidVisual =   
+DEPLIBS_rfidVisual =  
+LDLIBS_rfidVisual = $(PTHREAD) $(GTKLIB) -export-dynamic
 
 
 # Link or archive
-$(TARGETDIR_gladewin)/gladewin: $(TARGETDIR_gladewin) $(OBJS_gladewin) $(DEPLIBS_gladewin)
-	$(LINK.c) $(CFLAGS_gladewin) -o $@ $(OBJS_gladewin) $(LDLIBS_gladewin)
+$(TARGETDIR)/rfidVisual: $(TARGETDIR) $(OBJS_rfidVisual) $(DEPLIBS_rfidVisual)
+	$(LINK.c) $(CFLAGS_rfidVisual) -o $@ $(OBJS_rfidVisual) $(LDLIBS_rfidVisual)
 
 
 # Compile source files into .o files
-$(TARGETDIR_gladewin)/main.o: $(TARGETDIR_gladewin) main.c
-	$(COMPILE.c) $(CFLAGS_gladewin) $(GTKLIB) -o $@ main.c
+$(TARGETDIR)/rfidVisual.o: $(TARGETDIR) rfidVisual.c
+	$(COMPILE.c) $(CFLAGS_rfidVisual) $(GTKLIB) -o $@ rfidVisual.c
+
+$(TARGETDIR)/rfid.o: $(TARGETDIR) rfid.c
+	$(COMPILE.c) $(CFLAGS_rfidVisual) $(GTKLIB) -o $@ rfid.c
 
 
 
 #### Clean target deletes all generated files ####
 clean:
 	rm -f \
-		$(TARGETDIR_gladewin)/gladewin \
-		$(TARGETDIR_gladewin)/main.o
-	rm -f -r $(TARGETDIR_gladewin)
+		$(TARGETDIR)/rfidVisual \
+		$(TARGETDIR)/rfidVisual.o \
+		$(TARGETDIR)/rfid.o
+	rm -f -r $(TARGETDIR)
 
 
 # Create the target directory (if needed)
-$(TARGETDIR_gladewin):
-	mkdir -p $(TARGETDIR_gladewin)
+$(TARGETDIR):
+	mkdir -p $(TARGETDIR)
 
 
 # Enable dependency checking

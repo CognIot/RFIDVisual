@@ -5,14 +5,16 @@
  */
 
 /* 
- * File:   main.c
+ * File:   rfid.c
  * Author: Matthew Bennett <matthew.bennett@bostintechnology.com>
  *
- * Created on 30 March 2019, 09:34
+ * Created on 13 April 2019, 16:12
  */
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "../inc/rfid.h"
 
 /*
  * 
