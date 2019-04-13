@@ -86,7 +86,7 @@ int main(int argc, char** argv) {
 	// connect the widgets to the signal handler
 	gtk_builder_connect_signals(builder, widgets);    // note: second parameter points to widgets
     g_object_unref(builder);
-
+	
     gtk_widget_show(window);                
     gtk_main();
     // free up memory used by widget structure, probably not necessary as OS will
