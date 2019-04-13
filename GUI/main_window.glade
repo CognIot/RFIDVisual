@@ -7,6 +7,7 @@
     <property name="title" translatable="yes">RFID 125kHz</property>
     <property name="default_width">640</property>
     <property name="default_height">480</property>
+    <signal name="destroy" handler="on_main_application_window_destroy" swapped="no"/>
     <child>
       <object class="GtkGrid">
         <property name="visible">True</property>
@@ -117,6 +118,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="editable">False</property>
+                    <property name="placeholder_text" translatable="yes"> - - - </property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -190,6 +192,7 @@ Block</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="editable">False</property>
+                    <property name="placeholder_text" translatable="yes"> - - - </property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -349,18 +352,6 @@ Block</property>
                 <child>
                   <placeholder/>
                 </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
               </object>
               <packing>
                 <property name="name">page2</property>
@@ -426,6 +417,7 @@ Block</property>
             <property name="margin_right">12</property>
             <property name="editable">False</property>
             <property name="width_chars">30</property>
+            <property name="placeholder_text" translatable="yes">connect RFID module</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -440,6 +432,7 @@ Block</property>
             <property name="max_length">15</property>
             <property name="width_chars">8</property>
             <property name="caps_lock_warning">False</property>
+            <property name="placeholder_text" translatable="yes"> - - - </property>
           </object>
           <packing>
             <property name="left_attach">2</property>
