@@ -21,13 +21,14 @@
 typedef struct {
 	// All the widgets on the form go into here
 	GtkWidget *w_txt_tag_id_pg0;
-	GtkWidget *w_txt_view_page_block_info_pg0;
+	GtkWidget *w_txt_view_page_block_info_pg0;    
 	GtkWidget *w_radbut_tag_present_pg0;
 	GtkWidget *w_txt_tag_id_pg1;
 	GtkWidget *w_txt_view_page_block_info_pg1;
 	GtkWidget *w_radbut_tag_present_pg1;
 	GtkWidget *w_but_factory_reset;
 	GtkWidget *w_txt_version_info_box;
+	GtkWidget *w_txt_mode_box;
 } app_widgets;
 
 
@@ -73,8 +74,8 @@ int main(int argc, char** argv) {
 	
 	// build the structure of widget pointers
 	widgets->w_txt_tag_id_pg0  = GTK_WIDGET(gtk_builder_get_object(builder, "txt_tag_id_pg0"));
-	widgets->w_txt_view_page_block_info_pg01  = GTK_WIDGET(gtk_builder_get_object(builder, "txt_view_page_block_info_pg01"));
-	widgets->w_radbut_tag_present_pg01  = GTK_WIDGET(gtk_builder_get_object(builder, "radbut_tag_present_pg0"));
+	widgets->w_txt_view_page_block_info_pg0  = GTK_WIDGET(gtk_builder_get_object(builder, "txt_view_page_block_info_pg01"));
+	widgets->w_radbut_tag_present_pg0  = GTK_WIDGET(gtk_builder_get_object(builder, "radbut_tag_present_pg0"));
 	widgets->w_txt_tag_id_pg1  = GTK_WIDGET(gtk_builder_get_object(builder, "txt_tag_id_pg1"));
 	widgets->w_txt_view_page_block_info_pg1  = GTK_WIDGET(gtk_builder_get_object(builder, "txt_view_page_block_info_pg1"));
 	widgets->w_radbut_tag_present_pg1  = GTK_WIDGET(gtk_builder_get_object(builder, "radbut_tag_present_pg1"));

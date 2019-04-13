@@ -19,7 +19,7 @@
 /*
  * 
  */
-int main(int argc, char** argv) {
+int lib_main(int argc, char** argv) {
 
 	return (EXIT_SUCCESS);
 }

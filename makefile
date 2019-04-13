@@ -26,11 +26,12 @@ all: $(TARGETDIR)/rfidVisual
 #       Common Objects
 # ----------------------------------------------------------------------------------------------------------------
 OBJS_common = \
-	$(TARGETDIR_ALL)/rfid.o
+	$(TARGETDIR)/rfid.o
 	
 ## Target: rfidVisual
 OBJS_rfidVisual =  \
-	$(TARGETDIR_gladewin)/rfidVisual.o
+	$(OBJS_common) \
+	$(TARGETDIR)/rfidVisual.o
 USERLIBS_rfidVisual =   
 DEPLIBS_rfidVisual =  
 LDLIBS_rfidVisual = $(PTHREAD) $(GTKLIB) -export-dynamic
@@ -45,8 +46,8 @@ $(TARGETDIR)/rfidVisual: $(TARGETDIR) $(OBJS_rfidVisual) $(DEPLIBS_rfidVisual)
 $(TARGETDIR)/rfidVisual.o: $(TARGETDIR) rfidVisual.c
 	$(COMPILE.c) $(CFLAGS_rfidVisual) $(GTKLIB) -o $@ rfidVisual.c
 
-$(TARGETDIR)/rfid.o: $(TARGETDIR) rfid.c
-	$(COMPILE.c) $(CFLAGS_rfidVisual) $(GTKLIB) -o $@ rfid.c
+$(TARGETDIR)/rfid.o: $(TARGETDIR) lib_rfid/src/rfid.c
+	$(COMPILE.c) $(CFLAGS_rfidVisual) $(GTKLIB) -o $@ lib_rfid/src/rfid.c
 
 
 
