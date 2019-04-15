@@ -19,8 +19,13 @@
 /*
  * 
  */
-int lib_main(int argc, char** argv) {
-
-	return (EXIT_SUCCESS);
+int readVersion(conn, *reply) {
+	
+	int			number = 0;
+	
+	number = rand();
+	reply = ("version is :%d", number);
+	
+	return 0;
 }
 

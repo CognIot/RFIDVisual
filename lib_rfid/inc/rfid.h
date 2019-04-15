@@ -14,7 +14,10 @@
 #ifndef RFID_H
 #define RFID_H
 
-
-
+/*
+  given the connection, return the version info in the pointer *reply.
+	returns 0 or 1 for pass or fail
+ */
+int readVersion(conn, *reply);
 #endif /* RFID_H */
 

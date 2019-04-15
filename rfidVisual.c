@@ -17,24 +17,29 @@
 #include <gtk-3.0/gtk/gtk.h>
 
 #include "rfidVisual.h"
+#include "lib_rfid/inc/rfid.h"
 
 typedef struct {
 	// All the widgets on the form go into here
-	GtkWidget *w_txt_tag_id_pg0;
-	GtkWidget *w_txt_view_page_block_info_pg0;    
-	GtkWidget *w_radbut_tag_present_pg0;
-	GtkWidget *w_txt_tag_id_pg1;
-	GtkWidget *w_txt_view_page_block_info_pg1;
-	GtkWidget *w_radbut_tag_present_pg1;
-	GtkWidget *w_but_factory_reset;
-	GtkWidget *w_txt_version_info_box;
-	GtkWidget *w_txt_mode_box;
-} app_widgets;
+	GtkWidget w_txt_tag_id_pg0;
+	GtkWidget w_txt_view_page_block_info_pg0;    
+	GtkWidget w_radbut_tag_present_pg0;
+	GtkWidget w_txt_tag_id_pg1;
+	GtkWidget w_txt_view_page_block_info_pg1;
+	GtkWidget w_radbut_tag_present_pg1;
+	GtkWidget w_but_factory_reset;
+	GtkWidget w_txt_version_info_box;
+	GtkWidget w_txt_mode_box;
+	// also the serial connection
+	int		conn;
+} *app_widgets;
 
+/*
+ * Functions called by GUI
+ */
 
 // called when window is closed
-void on_main_application_window_destroy()
-{
+void on_main_application_window_destroy() {
     printf("In on window main destroy\n");
     gtk_main_quit();
     
@@ -42,7 +47,41 @@ void on_main_application_window_destroy()
 }
 
 
+/*
+ * functions called locally
+ */
 
+// calls the library and gets the version info
+void get_version_info(*widget) {
+
+	char		*version;
+	int			status = 1
+	int			count = 0;
+	
+	do {
+		status = readVersion(&widget->conn, &widget->version);
+		printf("Status: %d\n", status);
+	} while  ((count < 5) & (status != 0));
+	
+	if (status = 0) {
+		gtk_label_set_text(GTK_LABEL(widget->version), version);
+	}
+	
+	return;
+}
+
+/*
+ * function to open and configure the serial port
+ */
+
+void open_serial_port(*widget) {
+	
+	// Open the serial port
+	printf("opened a serial port\n");
+	
+	widget->conn = 1;		// set the serial port
+	return port;
+}
 /*
  * 
  */
@@ -56,7 +95,7 @@ int main(int argc, char** argv) {
     // instantiate structure, allocating memory for it
     app_widgets        *widgets = g_slice_new(app_widgets);
 	
-	// initialize GTK library and pass it in command line parameters
+	// initialise GTK library and pass it in command line parameters
 	gtk_init(&argc, &argv);
 
 	// build the gui
@@ -86,6 +125,10 @@ int main(int argc, char** argv) {
 	// connect the widgets to the signal handler
 	gtk_builder_connect_signals(builder, widgets);    // note: second parameter points to widgets
     g_object_unref(builder);
+	
+	open_serial_port(&widgets);
+	
+	get_version(&widgets);
 	
     gtk_widget_show(window);                
     gtk_main();
