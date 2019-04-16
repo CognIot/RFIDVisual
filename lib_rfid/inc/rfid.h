@@ -18,6 +18,6 @@
   given the connection, return the version info in the pointer *reply.
 	returns 0 or 1 for pass or fail
  */
-int readVersion(conn, *reply);
+int readVersion(int conn, char reply[]);
 #endif /* RFID_H */
 

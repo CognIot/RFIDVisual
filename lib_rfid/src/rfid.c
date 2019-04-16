@@ -13,18 +13,19 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../inc/rfid.h"
 
 /*
  * 
  */
-int readVersion(conn, *reply) {
+int readVersion(int conn, char reply[]) {
 	
 	int			number = 0;
 	
 	number = rand();
-	reply = ("version is :%d", number);
+	//sprintf(reply, "version is : %d", number);		//this line causes a segmentation fault
 	
 	return 0;
 }

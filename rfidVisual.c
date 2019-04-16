@@ -13,26 +13,26 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <gtk-3.0/gtk/gtk.h>
 
 #include "rfidVisual.h"
 #include "lib_rfid/inc/rfid.h"
 
-typedef struct {
-	// All the widgets on the form go into here
-	GtkWidget w_txt_tag_id_pg0;
-	GtkWidget w_txt_view_page_block_info_pg0;    
-	GtkWidget w_radbut_tag_present_pg0;
-	GtkWidget w_txt_tag_id_pg1;
-	GtkWidget w_txt_view_page_block_info_pg1;
-	GtkWidget w_radbut_tag_present_pg1;
-	GtkWidget w_but_factory_reset;
-	GtkWidget w_txt_version_info_box;
-	GtkWidget w_txt_mode_box;
-	// also the serial connection
-	int		conn;
-} *app_widgets;
+/*
+ * function to open and configure the serial port
+ */
+
+void open_serial_port( app_widgets *widget) {
+	
+	// Open the serial port
+	printf("opened a serial port\n");
+	
+	widget->conn = 1;		// set the serial port
+	return;
+}
+
 
 /*
  * Functions called by GUI
@@ -52,36 +52,31 @@ void on_main_application_window_destroy() {
  */
 
 // calls the library and gets the version info
-void get_version_info(*widget) {
+void get_version_info(app_widgets *widget) {
 
 	char		*version;
-	int			status = 1
+	int			status = 1;
 	int			count = 0;
+	int		connection;
 	
+	connection = widget->conn;
 	do {
-		status = readVersion(&widget->conn, &widget->version);
+		status = readVersion(connection, version);
 		printf("Status: %d\n", status);
+		count ++;
 	} while  ((count < 5) & (status != 0));
 	
-	if (status = 0) {
-		gtk_label_set_text(GTK_LABEL(widget->version), version);
+	//sprintf(widget->w_txt_version_info_box, "%s", version);		//this line causes a segmentation fault
+	
+	// widget->w_txt_version_info_box = "done";		//this line causes a segmentation fault
+	if (status == 0) {
+		gtk_label_set_text(GTK_LABEL(widget->w_txt_version_info_box), version);
 	}
 	
 	return;
 }
 
-/*
- * function to open and configure the serial port
- */
 
-void open_serial_port(*widget) {
-	
-	// Open the serial port
-	printf("opened a serial port\n");
-	
-	widget->conn = 1;		// set the serial port
-	return port;
-}
 /*
  * 
  */
@@ -126,9 +121,9 @@ int main(int argc, char** argv) {
 	gtk_builder_connect_signals(builder, widgets);    // note: second parameter points to widgets
     g_object_unref(builder);
 	
-	open_serial_port(&widgets);
+	open_serial_port(widgets);
 	
-	get_version(&widgets);
+	get_version_info(widgets);
 	
     gtk_widget_show(window);                
     gtk_main();
@@ -138,4 +133,3 @@ int main(int argc, char** argv) {
 	
 	return (EXIT_SUCCESS);
 }
-
