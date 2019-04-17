@@ -20,10 +20,11 @@
 /*
  * 
  */
-int readVersion(int conn, char reply[]) {
+int readVersion(int conn, int *reply) {
 	
-	int			number = 0;
+	int			number;
 	
+	reply[0] = 'a';
 	number = rand();
 	//sprintf(reply, "version is : %d", number);		//this line causes a segmentation fault
 	

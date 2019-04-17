@@ -33,7 +33,6 @@ void open_serial_port( app_widgets *widget) {
 	return;
 }
 
-
 /*
  * Functions called by GUI
  */
@@ -46,6 +45,10 @@ void on_main_application_window_destroy() {
     exit(0);
 }
 
+void on_menu_file_connect() {
+	printf("In On Menu File connect");
+	
+}
 
 /*
  * functions called locally
@@ -54,7 +57,7 @@ void on_main_application_window_destroy() {
 // calls the library and gets the version info
 void get_version_info(app_widgets *widget) {
 
-	char		*version;
+	int		*version;
 	int			status = 1;
 	int			count = 0;
 	int		connection;
@@ -63,6 +66,7 @@ void get_version_info(app_widgets *widget) {
 	do {
 		status = readVersion(connection, version);
 		printf("Status: %d\n", status);
+		printf("Version: %d\n", *version);
 		count ++;
 	} while  ((count < 5) & (status != 0));
 	
@@ -70,7 +74,7 @@ void get_version_info(app_widgets *widget) {
 	
 	// widget->w_txt_version_info_box = "done";		//this line causes a segmentation fault
 	if (status == 0) {
-		gtk_label_set_text(GTK_LABEL(widget->w_txt_version_info_box), version);
+		gtk_label_set_text(GTK_LABEL(widget->w_txt_version_info_box), *version);
 	}
 	
 	return;
