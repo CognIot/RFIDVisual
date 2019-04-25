@@ -2,6 +2,11 @@
 <!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkImage" id="img_teardrop">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">teardrop.jpg</property>
+  </object>
   <object class="GtkApplicationWindow" id="main_application_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">RFID 125kHz</property>
@@ -33,7 +38,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_menu_file_connect_activate" swapped="no"/>
+                        <signal name="activate" handler="on_menu_file_connect" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -291,6 +296,7 @@ Block</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="image">img_teardrop</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                       </object>

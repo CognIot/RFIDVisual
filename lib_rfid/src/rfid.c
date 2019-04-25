@@ -21,13 +21,15 @@
  * 
  */
 int readVersion(int conn, int *reply) {
-	
-	int			number;
-	
-	reply[0] = 'a';
-	number = rand();
-	//sprintf(reply, "version is : %d", number);		//this line causes a segmentation fault
-	
-	return 0;
+    
+    int            number;
+    printf("reading version\n");
+    
+    //reply[0] = 'a';
+    printf("about to get a number\n");
+    number = rand();
+    //sprintf(reply, "version is : %d", number);        //this line causes a segmentation fault
+    
+    return 0;
 }
 
