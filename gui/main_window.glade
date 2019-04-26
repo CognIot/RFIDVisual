@@ -272,10 +272,10 @@ Block</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <child>
-                          <object class="GtkImage" id="img_torpedo">
+                          <object class="GtkImage">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="pixbuf">tag_c_shrunk.jpg</property>
+                            <property name="pixbuf">IMG_1567_small.jpg</property>
                           </object>
                         </child>
                       </object>
@@ -290,13 +290,15 @@ Block</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                         <child>
                           <object class="GtkImage" id="img_teardrop ">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="pixbuf">teardrop.jpg</property>
+                            <property name="pixbuf">Keyfob1_burned_small.jpg</property>
                           </object>
                         </child>
                       </object>
@@ -317,7 +319,7 @@ Block</property>
                           <object class="GtkImage" id="img_petal">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="pixbuf">Petalx1b.jpg</property>
+                            <property name="pixbuf">Petalx1b_small.jpg</property>
                           </object>
                         </child>
                       </object>
