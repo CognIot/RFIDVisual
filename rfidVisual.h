@@ -14,7 +14,7 @@
 #ifndef RFIDVISUAL_H
 #define RFIDVISUAL_H
 
-typedef struct {
+struct app_widgets {
     // All the widgets on the form go into here
     GtkWidget *w_txt_tag_id_pg0;
     GtkWidget *w_txt_view_page_block_info_pg0;    
@@ -27,10 +27,12 @@ typedef struct {
     GtkWidget *w_txt_mode_box;
     // also the serial connection
     int        conn;
-} app_widgets;
+} ;
 
-void open_serial_port(app_widgets *widget);
-void get_version_info(app_widgets *widget) ;
+
+
+void open_serial_port(struct app_widgets *widget);
+void get_version_info(struct app_widgets *widget) ;
 void on_main_application_window_destroy() ;
 
 

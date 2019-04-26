@@ -24,7 +24,7 @@
  * function to open and configure the serial port
  */
 
-void open_serial_port( app_widgets *widget) {
+void open_serial_port( struct app_widgets *widget) {
     
     // Open the serial port
     printf("opened a serial port\n");
@@ -55,7 +55,7 @@ void on_menu_file_connect() {
  */
 
 // calls the library and gets the version info
-void get_version_info(app_widgets *widget) {
+void get_version_info(struct app_widgets *widget) {
 
     int             *version;
     int                     status = 1;
@@ -75,9 +75,7 @@ void get_version_info(app_widgets *widget) {
     // widget->w_txt_version_info_box = "done";             //this line causes a segmentation fault
     if (status == 0) {
         printf("status is zero\n");
-        gtk_label_set_text(GTK_LABEL(widget->w_txt_version_info_box), *version);
-        // (rfidVisual:2025): GLib-GObject-WARNING **: invalid cast from 'GtkEntry' to 'GtkLabel'
-        // Segmentation fault
+        gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), "hello box"); //*version);
                             
         printf("set the text\n");
 
@@ -98,7 +96,7 @@ int main(int argc, char** argv) {
     GError                  *err = NULL;    // holds any error that occurs within GTK
     
     // instantiate structure, allocating memory for it
-    app_widgets        *widgets = g_slice_new(app_widgets);
+    struct app_widgets	*widgets = g_slice_new(struct app_widgets);
     
     // initialise GTK library and pass it in command line parameters
     gtk_init(&argc, &argv);
@@ -131,6 +129,9 @@ int main(int argc, char** argv) {
     gtk_builder_connect_signals(builder, widgets);    // note: second parameter points to widgets
     g_object_unref(builder);
     
+    // Set the status of the various boxes etc.
+    gtk_editable_set_editable(GTK_ENTRY (widgets->w_txt_version_info_box), FALSE);
+    
     open_serial_port(widgets);
     printf("port opened\n");
     get_version_info(widgets);
@@ -139,7 +140,7 @@ int main(int argc, char** argv) {
     gtk_main();
     // free up memory used by widget structure, probably not necessary as OS will
     // reclaim memory from application after it exits
-    g_slice_free(app_widgets, widgets);
+    g_slice_free(struct app_widgets, widgets);
     
     return (EXIT_SUCCESS);
 }

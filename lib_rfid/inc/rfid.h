@@ -15,8 +15,12 @@
 #define RFID_H
 
 /*
-  given the connection, return the version info in the pointer *reply.
-    returns 0 or 1 for pass or fail
+  * given the connection, return the version info in the pointer *reply.
+  *   returns 0 or 1 for pass or fail
+  * returns something like the below in the *reply
+  * “a IDE MTRW H2 (MTRW_LP  V1.xx) DD/MM/YY) Copyright IB Technology Ltd”  0x00
+  * "b IDE MTRW H1 (firmware filename  V1.xx)  DD/MM/YY) Copyright message" 0x00
+  * "c IDE MTRW EM400X/MC200 (MTRW_LP  V1.xx) DD/MM/YY) Copyright IB Technology Ltd”  0x00
  */
 int readVersion(int conn, int *reply);
 #endif /* RFID_H */
