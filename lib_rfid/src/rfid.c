@@ -20,15 +20,15 @@
 /*
  * 
  */
-int readVersion(int conn, int *reply) {
+int readVersion(int conn, char *reply) {
     
     int            number;
     printf("reading version\n");
     
-    //reply[0] = 'a';
+    reply[0] = '\0';
     printf("about to get a number\n");
     number = rand();
-    //sprintf(reply, "version is : %d", number);        //this line causes a segmentation fault
+    sprintf(reply, "version is : %d", number);        //this line causes a segmentation fault
     
     return 0;
 }

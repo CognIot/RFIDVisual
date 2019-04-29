@@ -22,6 +22,6 @@
   * "b IDE MTRW H1 (firmware filename  V1.xx)  DD/MM/YY) Copyright message" 0x00
   * "c IDE MTRW EM400X/MC200 (MTRW_LP  V1.xx) DD/MM/YY) Copyright IB Technology Ltd”  0x00
  */
-int readVersion(int conn, int *reply);
+int readVersion(int conn, char *reply);
 #endif /* RFID_H */
 

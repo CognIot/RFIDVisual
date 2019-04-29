@@ -64,7 +64,7 @@ void get_version_info(struct app_widgets *widget) {
     
     connection = widget->conn;
     do {
-        status = readVersion(connection, version);
+        status = readVersion(connection, &version);
         printf("Status: %d\n", status);
         //printf("Version: %d\n", *version);
         count ++;
