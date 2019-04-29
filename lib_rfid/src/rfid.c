@@ -16,20 +16,38 @@
 #include <string.h>
 
 #include "../inc/rfid.h"
-
 /*
- * 
+ * using the comms, return the information from the get firmware command
  */
-int readVersion(int conn, char *reply) {
+char _getFirmwareInfo(int conn) {
+    
+    int             number;
+    char            firmware_response[100] = '\0';
+    
+    printf("Getting firware information.");
+
+    number = rand();
+    sprintf(answer, "c IDE MTRW EM400X/MC200 (MTRW_LP  V%d) DD/MM/YY) Copyright IB Technology Ltd", number);
+    printf("firmware Info is: >>%s<<\n", answer);
+    
+    return firmware_response;
+}
+    
+/*
+ * return the version information, excluding the mode.
+ */
+char readVersion(int conn) {
     
     int            number;
+    static char    answer[100];
+    answer[0] = '\0';
+    
     printf("reading version\n");
     
-    reply[0] = '\0';
-    printf("about to get a number\n");
     number = rand();
-    sprintf(reply, "version is : %d", number);        //this line causes a segmentation fault
+    sprintf(answer, "c IDE MTRW EM400X/MC200 (MTRW_LP  V%d) DD/MM/YY) Copyright IB Technology Ltd", number);
+    printf("answer is: >>%s<<\n", answer);
     
-    return 0;
+    return answer;
 }
 

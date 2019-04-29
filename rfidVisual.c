@@ -57,25 +57,26 @@ void on_menu_file_connect() {
 // calls the library and gets the version info
 void get_version_info(struct app_widgets *widget) {
 
-    int             *version;
+    int             version[100] = '\0';
     int                     status = 1;
     int                     count = 0;
     int             connection;
     
     connection = widget->conn;
     do {
-        status = readVersion(connection, &version);
-        printf("Status: %d\n", status);
-        //printf("Version: %d\n", *version);
+        strcpy(version,readVersion(connection));
+        
+        // check length of version
+        //
+        printf("size of Version: %d\n", sizeof(version)/sizeof(version[0]));        // returns 100
+        printf("Version Information: >>%s<<\n", version);
         count ++;
     } while  ((count < 5) & (status != 0));
     
-    //sprintf(widget->w_txt_version_info_box, "%s", version);               //this line causes a segmentation fault
-    
-    // widget->w_txt_version_info_box = "done";             //this line causes a segmentation fault
     if (status == 0) {
         printf("status is zero\n");
-        gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), "hello box"); //*version);
+        //gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), "hello box"); //*version);
+        gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), version);
                             
         printf("set the text\n");
 
