@@ -260,7 +260,7 @@ Block</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButtonBox">
+                  <object class="GtkButtonBox" id="mode_radiobuttons">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="layout_style">start</property>
@@ -271,6 +271,7 @@ Block</property>
                         <property name="receives_default">False</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="on_radiobutton_toggled" swapped="no"/>
                         <child>
                           <object class="GtkImage" id="img_torpedo">
                             <property name="visible">True</property>
@@ -294,6 +295,7 @@ Block</property>
                         <property name="valign">center</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="on_radiobutton_toggled " swapped="no"/>
                         <child>
                           <object class="GtkImage" id="img_teardrop ">
                             <property name="visible">True</property>
@@ -315,6 +317,7 @@ Block</property>
                         <property name="receives_default">False</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="on_radiobutton_toggled" swapped="no"/>
                         <child>
                           <object class="GtkImage" id="img_petal">
                             <property name="visible">True</property>
@@ -344,6 +347,7 @@ Block</property>
                     <property name="receives_default">True</property>
                     <property name="halign">start</property>
                     <property name="valign">center</property>
+                    <signal name="clicked" handler="on_btn_reset_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>

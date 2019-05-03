@@ -56,7 +56,8 @@ void on_menu_file_connect(struct app_widgets *widget) {
 
 void on_btn_reset_clicked(GtkButton *button, struct app_widgets *widget) {
 	
-	printf("reset button pressed:%d", widget->conn);
+    printf("Reset button has been clicked\n");
+	printf("value of connection is:%d\n", widget->conn);
 	
 	return;
 }
