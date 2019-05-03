@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+//TODO: need to move this to my learning git repository, rather than here
 
 char *readVersion(int conn) {
     

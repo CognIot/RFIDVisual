@@ -32,9 +32,16 @@ struct app_widgets {
 
 
 void open_serial_port(struct app_widgets *widget);
+
+// calls the library and gets the version info
 void get_version_info(struct app_widgets *widget) ;
 void on_main_application_window_destroy() ;
 
+// calls the library and gets the mode info
+void get_mode_info(struct app_widgets *widget);
+
+// called when the reset button is clicked
+void on_btn_reset_clicked(GtkButton *button, struct app_widgets *widget);
 
 #endif /* RFIDVISUAL_H */
 

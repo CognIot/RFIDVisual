@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/charPointers.o \
 	${OBJECTDIR}/lib_rfid/src/rfid.o \
 	${OBJECTDIR}/rfidVisual.o
 
@@ -62,6 +63,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/rfidvisual: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/rfidvisual ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/charPointers.o: charPointers.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/charPointers.o charPointers.c
 
 ${OBJECTDIR}/lib_rfid/src/rfid.o: lib_rfid/src/rfid.c 
 	${MKDIR} -p ${OBJECTDIR}/lib_rfid/src

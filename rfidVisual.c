@@ -45,23 +45,32 @@ void on_main_application_window_destroy() {
     exit(0);
 }
 
-void on_menu_file_connect() {
+void on_menu_file_connect(struct app_widgets *widget) {
     printf("In On Menu File connect");
     
+	open_serial_port(widget);
+    printf("port opened\n");
+    get_version_info(widget);
+	get_mode_info(widget);
 }
 
-/*
- * functions called locally
- */
+void on_btn_reset_clicked(GtkButton *button, struct app_widgets *widget) {
+	
+	printf("reset button pressed:%d", widget->conn);
+	
+	return;
+}
 
-// calls the library and gets the version info
+
 void get_version_info(struct app_widgets *widget) {
 
-    int             version[100] = '\0';
-    int                     status = 1;
-    int                     count = 0;
+    char            version[100];
+    int				count = 0;
     int             connection;
+	
+	version[0] = '\0';
     
+	//TODO: Check this routine with different sizes of strings
     connection = widget->conn;
     do {
         strcpy(version,readVersion(connection));
@@ -71,9 +80,11 @@ void get_version_info(struct app_widgets *widget) {
         printf("size of Version: %d\n", sizeof(version)/sizeof(version[0]));        // returns 100
         printf("Version Information: >>%s<<\n", version);
         count ++;
-    } while  ((count < 5) & (status != 0));
+		// TODO: improve the checking for a valid response
+
+    } while  ((count < 5) & (strlen(version) < 1));
     
-    if (status == 0) {
+    if (strlen(version) > 0) {
         printf("status is zero\n");
         //gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), "hello box"); //*version);
         gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), version);
@@ -85,6 +96,38 @@ void get_version_info(struct app_widgets *widget) {
     return;
 }
 
+
+void get_mode_info(struct app_widgets *widget) {
+
+    char            mode[1];
+    int				count = 0;
+    int             connection;
+	
+	mode[0] = '\0';
+    
+	//TODO: Check this routine with different sizes of strings
+    connection = widget->conn;
+    do {
+        strcpy(mode,readMode(connection));
+        
+        // check length of version
+        //
+        printf("Mode Information: >>%s<<\n", mode);
+        count ++;
+		// TODO: improve the checking for a valid response
+
+    } while  ((count < 5) & (strlen(mode) < 1));
+    
+    if (strlen(mode) > 0) {
+        printf("status is zero\n");
+        gtk_entry_set_text(GTK_ENTRY(widget->w_txt_mode_box), mode);
+                            
+        printf("set the text\n");
+
+    }
+    
+    return;
+}
 
 /*
  * 
@@ -105,12 +148,15 @@ int main(int argc, char** argv) {
     // build the gui
     builder = gtk_builder_new();
     gtk_builder_add_from_file (builder, "gui/main_window.glade", &err);
+	
+	//FIXME: If the application is run from the build directory, it doesn't find the glade file.
+	//		 Does this mean that the xml file is not incorporated into the executable??
     
     // check if the gui has opened.
     if (err != NULL) {
-	fprintf (stderr, "Unable to read file: %s\n", err->message);
-	g_error_free(err);
-	return 1;
+		fprintf (stderr, "Unable to read file: %s\n", err->message);
+		g_error_free(err);
+		return 1;
     }
     
     window = GTK_WIDGET(gtk_builder_get_object(builder, "main_application_window"));
@@ -131,11 +177,12 @@ int main(int argc, char** argv) {
     g_object_unref(builder);
     
     // Set the status of the various boxes etc.
-    gtk_editable_set_editable(GTK_ENTRY (widgets->w_txt_version_info_box), FALSE);
+    gtk_editable_set_editable(GTK_EDITABLE (widgets->w_txt_version_info_box), FALSE);
     
-    open_serial_port(widgets);
-    printf("port opened\n");
-    get_version_info(widgets);
+	// todo: need to get this to try and if fail, report to the user. Maybe have it only run by the menu item rather than automatic.
+	
+    on_menu_file_connect(widgets);
+
     
     gtk_widget_show(window);                
     gtk_main();
