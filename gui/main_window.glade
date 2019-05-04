@@ -453,14 +453,17 @@ Block</property>
           </packing>
         </child>
         <child>
-          <object class="GtkTextView" id="txt_version_info_box ">
+          <object class="GtkEntry" id="txt_version_info_box">
+            <property name="width_request">50</property>
             <property name="height_request">2</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can_focus">True</property>
+            <property name="vexpand">True</property>
             <property name="editable">False</property>
-            <property name="wrap_mode">word</property>
-            <property name="cursor_visible">False</property>
-            <property name="accepts_tab">False</property>
+            <property name="width_chars">50</property>
+            <property name="shadow_type">none</property>
+            <property name="caps_lock_warning">False</property>
+            <property name="placeholder_text" translatable="yes">connect RFID module . . . 1234567890123456789012345678901234567890</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -469,5 +472,29 @@ Block</property>
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkLabel" id="txtlabel_version_info_box">
+    <property name="width_request">50</property>
+    <property name="height_request">2</property>
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <property name="label" translatable="yes">connect RFID module . . . .</property>
+    <property name="wrap">True</property>
+    <property name="width_chars">50</property>
+    <attributes>
+      <attribute name="foreground" value="#000000000000"/>
+      <attribute name="background" value="#ffffffffffff"/>
+    </attributes>
+  </object>
+  <object class="GtkTextView" id="txtview_version_info_box ">
+    <property name="height_request">2</property>
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="editable">False</property>
+    <property name="wrap_mode">word</property>
+    <property name="cursor_visible">False</property>
+    <property name="accepts_tab">False</property>
   </object>
 </interface>
