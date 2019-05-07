@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>lib_rfid/inc/rfid.h</itemPath>
+      <itemPath>lib_rfid/inc/rfidPrivate.h</itemPath>
       <itemPath>rfidVisual.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -15,7 +16,9 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>charPointers.c</itemPath>
+      <itemPath>newmain.c</itemPath>
       <itemPath>lib_rfid/src/rfid.c</itemPath>
+      <itemPath>lib_rfid/src/rfidPrivate.c</itemPath>
       <itemPath>rfidVisual.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -45,6 +48,11 @@
         <ccTool>
           <standard>8</standard>
         </ccTool>
+        <linkerTool>
+          <linkerDynSerch>
+            <pElem>build</pElem>
+          </linkerDynSerch>
+        </linkerTool>
       </compileType>
       <item path="build/Readme.txt" ex="false" tool="3" flavor2="0">
       </item>
@@ -52,7 +60,13 @@
       </item>
       <item path="lib_rfid/inc/rfid.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="lib_rfid/inc/rfidPrivate.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="lib_rfid/src/rfid.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="lib_rfid/src/rfidPrivate.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="newmain.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="rfidVisual.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -86,7 +100,13 @@
       </item>
       <item path="lib_rfid/inc/rfid.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="lib_rfid/inc/rfidPrivate.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="lib_rfid/src/rfid.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="lib_rfid/src/rfidPrivate.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="newmain.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="rfidVisual.c" ex="false" tool="0" flavor2="0">
       </item>

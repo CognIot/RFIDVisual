@@ -16,6 +16,7 @@
 #include <string.h>
 
 #include "../inc/rfid.h"
+#include "../inc/rfidPrivate.h"
 
 /*
  * The functions below are private functions only
@@ -23,22 +24,6 @@
  * todo: consider moving these into a rfid_private.c file
  */
 
-char *_getFirmwareInfo(int conn) {
-    
-	//todo: This function does not yet call into the RFID module.
-    int             number;
-    static char     firmware_response[100];		// todo: need to set this size parameter to a #define rather than fixed.
-	firmware_response[0]= '\0';
-    
-    printf("Getting firmware information.\n");
-
-    number = rand();
-    sprintf(firmware_response, "c IDE MTRW EM400X/MC200 (MTRW_LP  V%d) DD/MM/YY) Copyright IB Technology Ltd", number);
-    printf("firmware Info is: >>%s<<\n", firmware_response);
-    
-    return firmware_response;
-}
-    
 /*
  * The functions below are public functions and should be called from outside.
  * 
@@ -54,7 +39,7 @@ char *readVersion(int conn) {
 	
     printf("reading version\n");
 	
-	strcpy(reply,_getFirmwareInfo(conn));
+	strcpy(reply,prv_getFirmwareInfo(conn));
 	printf("version info received:%s\n", reply);
 	
 	length = strlen(reply);
@@ -80,7 +65,7 @@ char *readMode(int conn) {
 	
     printf("reading mode\n");
 	
-	strcpy(reply,_getFirmwareInfo(conn));
+	strcpy(reply,prv_getFirmwareInfo(conn));
 	
 	i = strlen(reply);
 	if (i > MIN_FIRMWARE_LENGTH) {
@@ -95,4 +80,41 @@ char *readMode(int conn) {
 	}
 
     return answer;
+}
+
+int setReaderMode(int conn, char mode) {
+	
+	int			mode_setting = 0x00;
+	int			status = 1;
+	
+	// write mode
+	switch (mode) {
+		case 'a':
+		case 'A':
+			printf("Mode A being set\n");
+			mode_setting = 0x01;
+			break;
+		case 'b':
+		case 'B':
+			printf("Mode B being set\n");
+			mode_setting = 0x02;
+			break;
+		case 'c':
+		case 'C':
+			printf("Mode C being set\n");
+			mode_setting = 0x03;
+			break;
+		default:
+			printf("invalid mode received\n");
+			mode_setting = 0x00;
+			break;
+	}
+	
+	if (mode_setting > 0) {
+		status = prv_modeSetting(conn, mode_setting);
+	}
+	// check response
+	
+	// repeat if failed
+	return status;
 }

@@ -37,6 +37,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/charPointers.o \
 	${OBJECTDIR}/lib_rfid/src/rfid.o \
+	${OBJECTDIR}/lib_rfid/src/rfidPrivate.o \
+	${OBJECTDIR}/newmain.o \
 	${OBJECTDIR}/rfidVisual.o
 
 
@@ -54,7 +56,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=
+LDLIBSOPTIONS=-Wl,-rpath,build
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -73,6 +75,16 @@ ${OBJECTDIR}/lib_rfid/src/rfid.o: lib_rfid/src/rfid.c
 	${MKDIR} -p ${OBJECTDIR}/lib_rfid/src
 	${RM} "$@.d"
 	$(COMPILE.c) -g -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lib_rfid/src/rfid.o lib_rfid/src/rfid.c
+
+${OBJECTDIR}/lib_rfid/src/rfidPrivate.o: lib_rfid/src/rfidPrivate.c 
+	${MKDIR} -p ${OBJECTDIR}/lib_rfid/src
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lib_rfid/src/rfidPrivate.o lib_rfid/src/rfidPrivate.c
+
+${OBJECTDIR}/newmain.o: newmain.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/newmain.o newmain.c
 
 ${OBJECTDIR}/rfidVisual.o: rfidVisual.c 
 	${MKDIR} -p ${OBJECTDIR}

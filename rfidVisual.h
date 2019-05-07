@@ -23,12 +23,17 @@ struct app_widgets {
     GtkWidget *w_txt_view_page_block_info_pg1;
     GtkWidget *w_radbut_tag_present_pg1;
     GtkWidget *w_but_factory_reset;
+	GtkWidget *w_radbut_mode_a_pg2;
+	GtkWidget *w_radbut_mode_b_pg2;
+	GtkWidget *w_radbut_mode_c_pg2;
     GtkWidget *w_txt_version_info_box;
     GtkWidget *w_txt_mode_box;
     // also the serial connection
     int        conn;
 } ;
 
+
+//todo: improve the commentary for the functions
 
 
 void open_serial_port(struct app_widgets *widget);
@@ -42,6 +47,9 @@ void get_mode_info(struct app_widgets *widget);
 
 // called when the reset button is clicked
 void on_btn_reset_clicked(GtkButton *button, struct app_widgets *widget);
+
+// called when the mode radio buttons are changed.
+void on_radiobutton_toggled(GtkButton *button, struct app_widgets *widget);
 
 #endif /* RFIDVISUAL_H */
 
