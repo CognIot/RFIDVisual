@@ -26,7 +26,8 @@ all: $(TARGETDIR)/rfidVisual
 #       Common Objects
 # ----------------------------------------------------------------------------------------------------------------
 OBJS_common = \
-	$(TARGETDIR)/rfid.o
+	$(TARGETDIR)/rfid.o \
+	$(TARGETDIR)/rfidPrivate.o
 	
 ## Target: rfidVisual
 OBJS_rfidVisual =  \
@@ -48,6 +49,10 @@ $(TARGETDIR)/rfidVisual.o: $(TARGETDIR) rfidVisual.c
 
 $(TARGETDIR)/rfid.o: $(TARGETDIR) lib_rfid/src/rfid.c
 	$(COMPILE.c) $(CFLAGS_rfidVisual) $(GTKLIB) -o $@ lib_rfid/src/rfid.c
+
+$(TARGETDIR)/rfidPrivate.o: $(TARGETDIR) lib_rfid/src/rfidPrivate.c
+	$(COMPILE.c) $(CFLAGS_rfidVisual) $(GTKLIB) -o $@ lib_rfid/src/rfidPrivate.c
+
 
 
 

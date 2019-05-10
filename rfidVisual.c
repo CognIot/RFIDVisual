@@ -62,12 +62,36 @@ void on_btn_reset_clicked(GtkButton *button, struct app_widgets *widget) {
 	return;
 }
 
+void on_radiobutton_toggled(GtkButton *button, struct app_widgets *widget) {
+	
+	char			mode;
+	mode = '\0';
+    printf("Radiobuttons for mode has changed\n");
+	
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget->w_radbut_mode_a_pg2))) {
+        printf("Mode a selected\n");
+		mode = 'A';
+    }
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget->w_radbut_mode_b_pg2))) {
+        printf("Mode b selected\n");
+		mode = 'B';
+    }
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget->w_radbut_mode_c_pg2))) {
+        printf("Mode C selected\n");
+		mode = 'C';
+    }
+	
+	setReaderMode(widget->conn, mode);
+	return;
+}
+
 
 void get_version_info(struct app_widgets *widget) {
 
     char            version[100];
     int				count = 0;
     int             connection;
+	GtkTextBuffer	*buffer;
 	
 	version[0] = '\0';
     
@@ -87,10 +111,16 @@ void get_version_info(struct app_widgets *widget) {
     
     if (strlen(version) > 0) {
         printf("status is zero\n");
+<<<<<<< HEAD
         //gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), "hello box"); //*version);
         //gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), version);
         gtk_text_buffer_set_text(widget->w_txt_version_info_box_tree_view, version, 100);
                             
+=======
+        //gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), version);                    
+		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (widget->w_txt_version_info_box));
+		gtk_text_buffer_set_text(buffer, version, -1);
+>>>>>>> 372102b865b5bfa7c6a184971f8a0e7e462bab37
         printf("set the text\n");
 
     }
@@ -170,6 +200,9 @@ int main(int argc, char** argv) {
     widgets->w_txt_tag_id_pg1  = GTK_WIDGET(gtk_builder_get_object(builder, "txt_tag_id_pg1"));
     widgets->w_txt_view_page_block_info_pg1  = GTK_WIDGET(gtk_builder_get_object(builder, "txt_view_page_block_info_pg1"));
     widgets->w_radbut_tag_present_pg1  = GTK_WIDGET(gtk_builder_get_object(builder, "radbut_tag_present_pg1"));
+	widgets->w_radbut_mode_a_pg2 = GTK_WIDGET(gtk_builder_get_object(builder, "radbut_mode_a_pg2"));
+	widgets->w_radbut_mode_b_pg2 = GTK_WIDGET(gtk_builder_get_object(builder, "radbut_mode_b_pg2"));
+	widgets->w_radbut_mode_c_pg2 = GTK_WIDGET(gtk_builder_get_object(builder, "radbut_mode_c_pg2"));
     widgets->w_but_factory_reset  = GTK_WIDGET(gtk_builder_get_object(builder, "but_factory_reset"));
     widgets->w_txt_version_info_box  = GTK_WIDGET(gtk_builder_get_object(builder, "txt_version_info_box"));
     widgets->w_txt_version_info_box_tree_view = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->w_txt_version_info_box));
@@ -180,7 +213,8 @@ int main(int argc, char** argv) {
     g_object_unref(builder);
     
     // Set the status of the various boxes etc.
-    gtk_editable_set_editable(GTK_EDITABLE (widgets->w_txt_version_info_box), FALSE);
+	//todo: need to set the txt_version_info box to not editable.
+    //gtk_text_view_set_editable(GtkTextView (widgets->w_txt_version_info_box), FALSE);
     
 	// todo: need to get this to try and if fail, report to the user. Maybe have it only run by the menu item rather than automatic.
 	
