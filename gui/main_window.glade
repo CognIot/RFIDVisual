@@ -7,11 +7,17 @@
     <property name="title" translatable="yes">RFID 125kHz</property>
     <property name="default_width">640</property>
     <property name="default_height">480</property>
+    <property name="icon_name">img_logo.bmp</property>
     <signal name="destroy" handler="on_main_application_window_destroy" swapped="no"/>
     <child>
       <object class="GtkGrid">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="margin_left">2</property>
+        <property name="margin_right">2</property>
+        <property name="margin_bottom">2</property>
+        <property name="row_spacing">2</property>
+        <property name="column_spacing">2</property>
         <child>
           <object class="GtkMenuBar" id="main_application_menu">
             <property name="visible">True</property>
@@ -90,9 +96,10 @@
           <object class="GtkStack" id="main_stack_window">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="vexpand">True</property>
             <property name="transition_type">slide-left</property>
             <child>
-              <object class="GtkGrid">
+              <object class="GtkGrid" id="stack_read_pg0">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -110,6 +117,7 @@
                   <object class="GtkEntry" id="txt_tag_id_pg0">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="hexpand">True</property>
                     <property name="editable">False</property>
                     <property name="placeholder_text" translatable="yes"> - - - </property>
                   </object>
@@ -131,17 +139,6 @@ Block</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkTextView" id="txt_view_page_block_info_pg0">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="editable">False</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">2</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkRadioButton" id="radbut_tag_present_pg0">
                     <property name="label" translatable="yes">Tag Present</property>
                     <property name="visible">True</property>
@@ -149,6 +146,7 @@ Block</property>
                     <property name="focus_on_click">False</property>
                     <property name="receives_default">False</property>
                     <property name="halign">end</property>
+                    <property name="margin_right">15</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -157,16 +155,36 @@ Block</property>
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <object class="GtkTextView" id="txt_view_page_block_info_pg0">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="editable">False</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
                   <placeholder/>
                 </child>
               </object>
               <packing>
-                <property name="name">page0</property>
-                <property name="title" translatable="yes">page0</property>
+                <property name="name">Read Stack</property>
+                <property name="title" translatable="yes">Read</property>
               </packing>
             </child>
             <child>
-              <object class="GtkGrid">
+              <object class="GtkGrid" id="stack_write_pg1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -184,6 +202,7 @@ Block</property>
                   <object class="GtkEntry" id="txt_tag_id_pg1">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="hexpand">True</property>
                     <property name="editable">False</property>
                     <property name="placeholder_text" translatable="yes"> - - - </property>
                   </object>
@@ -205,17 +224,6 @@ Block</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkTextView" id="txt_view_page_block_info_pg1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="editable">False</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">2</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkRadioButton" id="radbut_tag_present_pg1">
                     <property name="label" translatable="yes">Tag Present</property>
                     <property name="visible">True</property>
@@ -223,6 +231,7 @@ Block</property>
                     <property name="focus_on_click">False</property>
                     <property name="receives_default">False</property>
                     <property name="halign">end</property>
+                    <property name="margin_right">15</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                   </object>
@@ -232,17 +241,37 @@ Block</property>
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="vexpand">True</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <object class="GtkTextView" id="txt_view_page_block_info_pg1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="editable">False</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
                   <placeholder/>
                 </child>
               </object>
               <packing>
-                <property name="name">page1</property>
-                <property name="title" translatable="yes">page1</property>
+                <property name="name">Write Stack</property>
+                <property name="title" translatable="yes">Write</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <object class="GtkGrid">
+              <object class="GtkGrid" id="stack_misc_pg2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -263,6 +292,7 @@ Block</property>
                   <object class="GtkButtonBox" id="mode_radiobuttons">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="vexpand">True</property>
                     <property name="homogeneous">True</property>
                     <property name="layout_style">start</property>
                     <child>
@@ -271,6 +301,7 @@ Block</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
+                        <property name="group">radbut_mode_b_pg2</property>
                         <signal name="toggled" handler="on_radiobutton_toggled" swapped="no"/>
                         <child>
                           <object class="GtkImage" id="img_torpedo">
@@ -294,6 +325,7 @@ Block</property>
                         <property name="halign">center</property>
                         <property name="valign">center</property>
                         <property name="draw_indicator">True</property>
+                        <property name="group">radbut_mode_a_pg2</property>
                         <signal name="toggled" handler="on_radiobutton_toggled " swapped="no"/>
                         <child>
                           <object class="GtkImage" id="img_teardrop ">
@@ -315,6 +347,7 @@ Block</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="draw_indicator">True</property>
+                        <property name="group">radbut_mode_a_pg2</property>
                         <signal name="toggled" handler="on_radiobutton_toggled" swapped="no"/>
                         <child>
                           <object class="GtkImage" id="img_petal">
@@ -369,8 +402,8 @@ Block</property>
                 </child>
               </object>
               <packing>
-                <property name="name">page2</property>
-                <property name="title" translatable="yes">page2</property>
+                <property name="name">Miscellaneous Stack</property>
+                <property name="title" translatable="yes">Misc</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -403,9 +436,10 @@ Block</property>
         </child>
         <child>
           <object class="GtkLabel" id="lbl_version_info">
+            <property name="width_request">450</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Version Information</property>
+            <property name="label" translatable="yes">Version Information...</property>
             <property name="width_chars">30</property>
           </object>
           <packing>
@@ -418,7 +452,7 @@ Block</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">Mode</property>
-            <property name="width_chars">8</property>
+            <property name="width_chars">5</property>
           </object>
           <packing>
             <property name="left_attach">2</property>
@@ -428,10 +462,12 @@ Block</property>
         <child>
           <object class="GtkEntry" id="txt_mode_box">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
             <property name="editable">False</property>
-            <property name="max_length">15</property>
+            <property name="max_length">10</property>
             <property name="width_chars">8</property>
+            <property name="max_width_chars">12</property>
             <property name="caps_lock_warning">False</property>
             <property name="placeholder_text" translatable="yes"> - - - </property>
           </object>
@@ -454,18 +490,22 @@ Block</property>
         </child>
         <child>
           <object class="GtkScrolledWindow">
+            <property name="width_request">270</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="vexpand">True</property>
             <property name="vscrollbar_policy">never</property>
             <property name="shadow_type">in</property>
+            <property name="max_content_height">2</property>
             <child>
               <object class="GtkTextView" id="txt_version_info_box">
-                <property name="height_request">2</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="editable">False</property>
                 <property name="wrap_mode">word</property>
+                <property name="left_margin">2</property>
+                <property name="right_margin">2</property>
+                <property name="top_margin">1</property>
+                <property name="bottom_margin">1</property>
                 <property name="cursor_visible">False</property>
                 <property name="accepts_tab">False</property>
               </object>
@@ -478,32 +518,5 @@ Block</property>
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkEntry" id="txt_version_info_box_entry">
-    <property name="width_request">50</property>
-    <property name="height_request">2</property>
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="vexpand">True</property>
-    <property name="editable">False</property>
-    <property name="width_chars">50</property>
-    <property name="shadow_type">none</property>
-    <property name="caps_lock_warning">False</property>
-    <property name="placeholder_text" translatable="yes">connect RFID module . . . 1234567890123456789012345678901234567890</property>
-  </object>
-  <object class="GtkLabel" id="txtlabel_version_info_box">
-    <property name="width_request">50</property>
-    <property name="height_request">2</property>
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="hexpand">True</property>
-    <property name="vexpand">True</property>
-    <property name="label" translatable="yes">connect RFID module . . . .</property>
-    <property name="wrap">True</property>
-    <property name="width_chars">50</property>
-    <attributes>
-      <attribute name="foreground" value="#000000000000"/>
-      <attribute name="background" value="#ffffffffffff"/>
-    </attributes>
   </object>
 </interface>
