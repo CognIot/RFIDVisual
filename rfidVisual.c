@@ -20,6 +20,7 @@
 #include "rfidVisual.h"
 #include "lib_rfid/inc/rfid.h"
 
+//ToDo: in glade I need to add the scroll box for the read and write parts when i get there.
 /*
  * function to open and configure the serial port
  */
@@ -88,6 +89,7 @@ void on_radiobutton_toggled(GtkButton *button, struct app_widgets *widget) {
 
 void get_version_info(struct app_widgets *widget) {
 
+	//Maybe: change version from a char to a gchar
     char            version[100];
     int				count = 0;
     int             connection;
@@ -111,16 +113,11 @@ void get_version_info(struct app_widgets *widget) {
     
     if (strlen(version) > 0) {
         printf("status is zero\n");
-<<<<<<< HEAD
-        //gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), "hello box"); //*version);
-        //gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), version);
-        gtk_text_buffer_set_text(widget->w_txt_version_info_box_tree_view, version, 100);
-                            
-=======
-        //gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), version);                    
+		//todo: this is completely wrong!
+		//		need to get the buffer and then set the buffer
 		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (widget->w_txt_version_info_box));
+		printf("Got the buffer\n");
 		gtk_text_buffer_set_text(buffer, version, -1);
->>>>>>> 372102b865b5bfa7c6a184971f8a0e7e462bab37
         printf("set the text\n");
 
     }
@@ -205,7 +202,6 @@ int main(int argc, char** argv) {
 	widgets->w_radbut_mode_c_pg2 = GTK_WIDGET(gtk_builder_get_object(builder, "radbut_mode_c_pg2"));
     widgets->w_but_factory_reset  = GTK_WIDGET(gtk_builder_get_object(builder, "but_factory_reset"));
     widgets->w_txt_version_info_box  = GTK_WIDGET(gtk_builder_get_object(builder, "txt_version_info_box"));
-    widgets->w_txt_version_info_box_tree_view = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->w_txt_version_info_box));
     widgets->w_txt_mode_box  = GTK_WIDGET(gtk_builder_get_object(builder, "txt_mode_box"));
     
     // connect the widgets to the signal handler
@@ -213,11 +209,10 @@ int main(int argc, char** argv) {
     g_object_unref(builder);
     
     // Set the status of the various boxes etc.
-	//todo: need to set the txt_version_info box to not editable.
+	//ToDo: need to set the txt_version_info box to not editable.
     //gtk_text_view_set_editable(GtkTextView (widgets->w_txt_version_info_box), FALSE);
     
-	// todo: need to get this to try and if fail, report to the user. Maybe have it only run by the menu item rather than automatic.
-	
+	// ToDo: need to get this to try and if fail, report to the user. Maybe have it only run by the menu item rather than automatic.
     on_menu_file_connect(widgets);
 
     

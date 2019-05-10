@@ -27,8 +27,6 @@ struct app_widgets {
 	GtkWidget *w_radbut_mode_b_pg2;
 	GtkWidget *w_radbut_mode_c_pg2;
     GtkWidget *w_txt_version_info_box;
-    GtkTextBuffer *w_txt_version_info_box_tree_view;
-    //GtkWidget *w_txt_version_info_box_tree_view;
     GtkWidget *w_txt_mode_box;
     // also the serial connection
     int        conn;
