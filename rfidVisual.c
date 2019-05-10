@@ -179,9 +179,9 @@ int main(int argc, char** argv) {
     gtk_builder_add_from_file (builder, "gui/main_window.glade", &err);
 	
 	//FIXME: If the application is run from the build directory, it doesn't find the glade file.
-	//		 Does this mean that the xml file is not incorporated into the executable??
+	//		 Does this mean that the XML file is not incorporated into the executable??
     
-    // check if the gui has opened.
+    // check if the GUI has opened.
     if (err != NULL) {
 		fprintf (stderr, "Unable to read file: %s\n", err->message);
 		g_error_free(err);
