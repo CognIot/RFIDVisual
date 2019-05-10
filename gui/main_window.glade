@@ -453,14 +453,23 @@ Block</property>
           </packing>
         </child>
         <child>
-          <object class="GtkTextView" id="txt_version_info_box ">
-            <property name="height_request">2</property>
+          <object class="GtkScrolledWindow">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="editable">False</property>
-            <property name="wrap_mode">word</property>
-            <property name="cursor_visible">False</property>
-            <property name="accepts_tab">False</property>
+            <property name="can_focus">True</property>
+            <property name="vexpand">True</property>
+            <property name="vscrollbar_policy">never</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkTextView" id="txt_version_info_box">
+                <property name="height_request">2</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="editable">False</property>
+                <property name="wrap_mode">word</property>
+                <property name="cursor_visible">False</property>
+                <property name="accepts_tab">False</property>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -470,7 +479,7 @@ Block</property>
       </object>
     </child>
   </object>
-  <object class="GtkEntry" id="txt_version_info_box">
+  <object class="GtkEntry" id="txt_version_info_box_entry">
     <property name="width_request">50</property>
     <property name="height_request">2</property>
     <property name="visible">True</property>
