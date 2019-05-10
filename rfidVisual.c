@@ -88,7 +88,8 @@ void get_version_info(struct app_widgets *widget) {
     if (strlen(version) > 0) {
         printf("status is zero\n");
         //gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), "hello box"); //*version);
-        gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), version);
+        //gtk_entry_set_text(GTK_ENTRY(widget->w_txt_version_info_box), version);
+        gtk_text_buffer_set_text(widget->w_txt_version_info_box_tree_view, version, 100);
                             
         printf("set the text\n");
 
@@ -171,6 +172,7 @@ int main(int argc, char** argv) {
     widgets->w_radbut_tag_present_pg1  = GTK_WIDGET(gtk_builder_get_object(builder, "radbut_tag_present_pg1"));
     widgets->w_but_factory_reset  = GTK_WIDGET(gtk_builder_get_object(builder, "but_factory_reset"));
     widgets->w_txt_version_info_box  = GTK_WIDGET(gtk_builder_get_object(builder, "txt_version_info_box"));
+    widgets->w_txt_version_info_box_tree_view = gtk_text_view_get_buffer(GTK_TEXT_VIEW(widgets->w_txt_version_info_box));
     widgets->w_txt_mode_box  = GTK_WIDGET(gtk_builder_get_object(builder, "txt_mode_box"));
     
     // connect the widgets to the signal handler
