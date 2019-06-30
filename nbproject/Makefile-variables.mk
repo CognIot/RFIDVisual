@@ -8,12 +8,12 @@ CND_BUILDDIR=build
 CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=GNU-Linux
-CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux
-CND_ARTIFACT_NAME_Debug=rfidvisual
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/rfidvisual
-CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux/package
+CND_ARTIFACT_DIR_Debug=build
+CND_ARTIFACT_NAME_Debug=rfidVisual
+CND_ARTIFACT_PATH_Debug=build/rfidVisual
+CND_PACKAGE_DIR_Debug=package
 CND_PACKAGE_NAME_Debug=rfidvisual.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/rfidvisual.tar
+CND_PACKAGE_PATH_Debug=package/rfidvisual.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-Linux
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux

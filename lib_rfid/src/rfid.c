@@ -18,12 +18,8 @@
 #include "../inc/rfid.h"
 #include "../inc/rfidPrivate.h"
 
-/*
- * The functions below are private functions only
- * 
- * todo: consider moving these into a rfid_private.c file
- */
 
+//Note: This contains the functions for the user functions.
 /*
  * The functions below are public functions and should be called from outside.
  * 
@@ -117,4 +113,104 @@ int setReaderMode(int conn, char mode) {
 	
 	// repeat if failed
 	return status;
+}
+
+int resetReader(int conn) {
+	
+	int			status;
+	
+	status = waitForCTS(conn);
+	
+	if (status == 0) {
+		status = prv_sendResetCommand(conn);
+	}
+	else {
+		status = 1;
+	}
+		
+	return status;
+}
+
+int setupComms(){
+	
+	int			conn = 1;
+	//ToDO: Write function
+	
+	prv_setupWiringPi();
+	
+	//ToDo: The bit below needs to have better failure handling...
+	
+	conn = prv_openCommsPort();
+	if (conn > 1) {
+
+		// We have opened communications with the onboard Serial device
+		int antennaOK = 0;
+
+		printf("Opened communications with PirFix.\n");  // Communications opened successfully
+
+		antennaOK = GetAntennaStatus(conn);  // Check status of the antenna.
+
+		if (antennaOK != 0) {
+			conn = 1;
+		}		
+	}
+
+	//ToDo: What do I return at this stage>> should be 0 - success, 1 - failure
+	// actually returning the connection number or 1 if failure.
+	return conn;
+}
+
+int readTagStatus(int fd) {
+	int		noTag = 1;
+
+	printf("\nWaiting for a tag ....\n");
+
+	while (noTag == 1)
+	{
+		waitForCTS(fd);
+
+		noTag = prv_checkTagPresent(fd);
+	}
+	//ToDo: No idea what to do here at present!
+	return noTag;
+}
+
+int setPollingDelay(int fd, int pollDelay) {
+	
+	int		status = 1;
+	// validate the parameters given
+	//ToDo: Need to validate the delay given
+
+	// Set the polling delay
+	waitForCTS(fd);
+
+	//ToDo: How do I all the user to set the value?
+	//		especially as it isn't used on the visual stuff
+	status = prv_setPollingDelay(fd, pollDelay);
+	
+	//ToDo: Set the return value based on 
+	return status;
+}
+			
+int * readTagPage(int fd, int pg) {
+
+	int			* data;
+
+	data = prv_readPage(fd, pg);
+	
+	return data;
+}
+
+int * readTagBlock(int fd, int blk) {
+	
+	int		noTag = 1;
+	int		* data;
+	
+	while (noTag == 1)
+	{
+		waitForCTS(fd);
+
+		data = prv_readBlock(fd, blk);
+	}
+	return data;
 }

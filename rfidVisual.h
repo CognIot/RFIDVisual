@@ -33,7 +33,7 @@ struct app_widgets {
 } ;
 
 
-//todo: improve the commentary for the functions
+//ToDo: improve the commentary for the functions
 
 
 void open_serial_port(struct app_widgets *widget);

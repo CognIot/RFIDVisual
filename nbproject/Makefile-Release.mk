@@ -35,10 +35,12 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/RFIDReader.o \
 	${OBJECTDIR}/charPointers.o \
 	${OBJECTDIR}/lib_rfid/src/rfid.o \
 	${OBJECTDIR}/lib_rfid/src/rfidPrivate.o \
 	${OBJECTDIR}/newmain.o \
+	${OBJECTDIR}/rfidReader.o \
 	${OBJECTDIR}/rfidVisual.o
 
 
@@ -66,6 +68,11 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/rfidvisual: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/rfidvisual ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/RFIDReader.o: RFIDReader.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/RFIDReader.o RFIDReader.c
+
 ${OBJECTDIR}/charPointers.o: charPointers.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -85,6 +92,11 @@ ${OBJECTDIR}/newmain.o: newmain.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/newmain.o newmain.c
+
+${OBJECTDIR}/rfidReader.o: rfidReader.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/rfidReader.o rfidReader.c
 
 ${OBJECTDIR}/rfidVisual.o: rfidVisual.c 
 	${MKDIR} -p ${OBJECTDIR}

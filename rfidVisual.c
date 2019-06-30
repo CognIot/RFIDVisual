@@ -5,7 +5,7 @@
  */
 
 /* 
- * File:   main.c
+ * File:   rfidVisual.c
  * Author: Matthew Bennett <matthew.bennett@bostintechnology.com>
  *
  * Created on 30 March 2019, 09:34
@@ -20,7 +20,9 @@
 #include "rfidVisual.h"
 #include "lib_rfid/inc/rfid.h"
 
-//ToDo: in glade I need to add the scroll box for the read and write parts when i get there.
+
+//ToDo: Mode in the Mode Box needs to be centralised and smaller, allowing version to be wider.
+//ToDo: Mode selection pictures needs to include words, and have only 1 selected, not all 3!
 /*
  * function to open and configure the serial port
  */
@@ -57,8 +59,17 @@ void on_menu_file_connect(struct app_widgets *widget) {
 
 void on_btn_reset_clicked(GtkButton *button, struct app_widgets *widget) {
 	
+	int			status;
     printf("Reset button has been clicked\n");
-	printf("value of connection is:%d\n", widget->conn);
+	
+	status = resetReader(widget->conn);
+	
+	if (status ==0 ) {
+		printf("Factory Reset Complete\n");
+	}
+	else {
+		printf("Factory Reset failed\n");
+	}
 	
 	return;
 }
@@ -86,7 +97,6 @@ void on_radiobutton_toggled(GtkButton *button, struct app_widgets *widget) {
 	return;
 }
 
-
 void get_version_info(struct app_widgets *widget) {
 
 	//Maybe: change version from a char to a gchar
@@ -97,7 +107,7 @@ void get_version_info(struct app_widgets *widget) {
 	
 	version[0] = '\0';
     
-	//TODO: Check this routine with different sizes of strings
+	//ToDo: Check this routine with different sizes of strings
     connection = widget->conn;
     do {
         strcpy(version,readVersion(connection));
@@ -107,14 +117,13 @@ void get_version_info(struct app_widgets *widget) {
         printf("size of Version: %d\n", sizeof(version)/sizeof(version[0]));        // returns 100
         printf("Version Information: >>%s<<\n", version);
         count ++;
-		// TODO: improve the checking for a valid response
+		// ToDo: improve the checking for a valid response
 
     } while  ((count < 5) & (strlen(version) < 1));
     
     if (strlen(version) > 0) {
         printf("status is zero\n");
-		//todo: this is completely wrong!
-		//		need to get the buffer and then set the buffer
+		// Get and then set the buffer
 		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (widget->w_txt_version_info_box));
 		printf("Got the buffer\n");
 		gtk_text_buffer_set_text(buffer, version, -1);
@@ -125,7 +134,6 @@ void get_version_info(struct app_widgets *widget) {
     return;
 }
 
-
 void get_mode_info(struct app_widgets *widget) {
 
     char            mode[1];
@@ -134,7 +142,7 @@ void get_mode_info(struct app_widgets *widget) {
 	
 	mode[0] = '\0';
     
-	//TODO: Check this routine with different sizes of strings
+	//ToDo: Check this routine with different sizes of strings
     connection = widget->conn;
     do {
         strcpy(mode,readMode(connection));
@@ -143,7 +151,7 @@ void get_mode_info(struct app_widgets *widget) {
         //
         printf("Mode Information: >>%s<<\n", mode);
         count ++;
-		// TODO: improve the checking for a valid response
+		// ToDo: improve the checking for a valid response
 
     } while  ((count < 5) & (strlen(mode) < 1));
     
@@ -178,7 +186,7 @@ int main(int argc, char** argv) {
     builder = gtk_builder_new();
     gtk_builder_add_from_file (builder, "gui/main_window.glade", &err);
 	
-	//FIXME: If the application is run from the build directory, it doesn't find the glade file.
+	//Bug: If the application is run from the build directory, it doesn't find the glade file.
 	//		 Does this mean that the XML file is not incorporated into the executable??
     
     // check if the GUI has opened.

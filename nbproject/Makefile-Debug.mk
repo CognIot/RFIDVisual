@@ -35,10 +35,12 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/RFIDReader.o \
 	${OBJECTDIR}/charPointers.o \
 	${OBJECTDIR}/lib_rfid/src/rfid.o \
 	${OBJECTDIR}/lib_rfid/src/rfidPrivate.o \
 	${OBJECTDIR}/newmain.o \
+	${OBJECTDIR}/rfidReader.o \
 	${OBJECTDIR}/rfidVisual.o
 
 
@@ -60,11 +62,16 @@ LDLIBSOPTIONS=-Wl,-rpath,build
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/rfidvisual
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk build/rfidVisual
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/rfidvisual: ${OBJECTFILES}
-	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/rfidvisual ${OBJECTFILES} ${LDLIBSOPTIONS}
+build/rfidVisual: ${OBJECTFILES}
+	${MKDIR} -p build
+	${LINK.c} -o build/rfidVisual ${OBJECTFILES} ${LDLIBSOPTIONS} $$(pkg-config --cflags --libs gtk+-3.0 )
+
+${OBJECTDIR}/RFIDReader.o: RFIDReader.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/RFIDReader.o RFIDReader.c
 
 ${OBJECTDIR}/charPointers.o: charPointers.c 
 	${MKDIR} -p ${OBJECTDIR}
@@ -86,6 +93,11 @@ ${OBJECTDIR}/newmain.o: newmain.c
 	${RM} "$@.d"
 	$(COMPILE.c) -g -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/newmain.o newmain.c
 
+${OBJECTDIR}/rfidReader.o: rfidReader.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/rfidReader.o rfidReader.c
+
 ${OBJECTDIR}/rfidVisual.o: rfidVisual.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -97,7 +109,7 @@ ${OBJECTDIR}/rfidVisual.o: rfidVisual.c
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/rfidvisual
+	${RM} build/rfidVisual
 
 # Subprojects
 .clean-subprojects:
