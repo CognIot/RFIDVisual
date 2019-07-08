@@ -8,6 +8,7 @@
       <itemPath>lib_rfid/inc/rfidPrivate.h</itemPath>
       <itemPath>rfidReader.h</itemPath>
       <itemPath>rfidVisual.h</itemPath>
+      <itemPath>lib_rfid/inc/rfid_parameters.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -85,6 +86,8 @@
       </item>
       <item path="lib_rfid/inc/rfidPrivate.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="lib_rfid/inc/rfid_parameters.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="lib_rfid/src/rfid.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="lib_rfid/src/rfidPrivate.c" ex="false" tool="0" flavor2="0">
@@ -132,6 +135,8 @@
       <item path="lib_rfid/inc/rfid.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="lib_rfid/inc/rfidPrivate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="lib_rfid/inc/rfid_parameters.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="lib_rfid/src/rfid.c" ex="false" tool="0" flavor2="0">
       </item>

@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../inc/rfid_parameters.h"
 #include "../inc/rfid.h"
 #include "../inc/rfidPrivate.h"
 
@@ -33,7 +34,7 @@ char *readVersion(int conn) {
 	reply[0] = '\0';
 	answer[0] = '\0';
 	
-    printf("reading version\n");
+    printf("Reading version\n");
 	
 	strcpy(reply,prv_getFirmwareInfo(conn));
 	printf("version info received:%s\n", reply);
@@ -59,7 +60,7 @@ char *readMode(int conn) {
 	reply[0] = '\0';
 	answer[0] = '\0';
 	
-    printf("reading mode\n");
+    printf("Reading Mode\n");
 	
 	strcpy(reply,prv_getFirmwareInfo(conn));
 	
@@ -119,7 +120,7 @@ int resetReader(int conn) {
 	
 	int			status;
 	
-	status = waitForCTS(conn);
+	status = prv_waitForCTS(conn);
 	
 	if (status == 0) {
 		status = prv_sendResetCommand(conn);
@@ -134,7 +135,6 @@ int resetReader(int conn) {
 int setupComms(){
 	
 	int			conn = 1;
-	//ToDO: Write function
 	
 	prv_setupWiringPi();
 	
@@ -148,7 +148,7 @@ int setupComms(){
 
 		printf("Opened communications with PirFix.\n");  // Communications opened successfully
 
-		antennaOK = GetAntennaStatus(conn);  // Check status of the antenna.
+		antennaOK = prv_getAntennaStatus(conn);  // Check status of the antenna.
 
 		if (antennaOK != 0) {
 			conn = 1;
@@ -167,7 +167,7 @@ int readTagStatus(int fd) {
 
 	while (noTag == 1)
 	{
-		waitForCTS(fd);
+		prv_waitForCTS(fd);
 
 		noTag = prv_checkTagPresent(fd);
 	}
@@ -182,7 +182,7 @@ int setPollingDelay(int fd, int pollDelay) {
 	//ToDo: Need to validate the delay given
 
 	// Set the polling delay
-	waitForCTS(fd);
+	prv_waitForCTS(fd);
 
 	//ToDo: How do I all the user to set the value?
 	//		especially as it isn't used on the visual stuff
@@ -208,7 +208,7 @@ int * readTagBlock(int fd, int blk) {
 	
 	while (noTag == 1)
 	{
-		waitForCTS(fd);
+		prv_waitForCTS(fd);
 
 		data = prv_readBlock(fd, blk);
 	}

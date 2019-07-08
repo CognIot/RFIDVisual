@@ -359,7 +359,7 @@ Block</property>
                         <property name="valign">center</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">radbut_mode_a_pg2</property>
-                        <signal name="toggled" handler="on_radiobutton_toggled " swapped="no"/>
+                        <signal name="toggled" handler="on_radiobutton_toggled" swapped="no"/>
                         <child>
                           <object class="GtkImage" id="img_teardrop ">
                             <property name="visible">True</property>

@@ -20,6 +20,9 @@
 #define		VALID_MODES				"abcABC"	//the valid modes for the sensor
 
 
+
+
+
 /*****************************************************************************************
  * Description: Takes the response from the module and extracts the version info
  *				
@@ -78,18 +81,23 @@ int resetReader(int conn);
  ****************************************************************************************/
 int setupComms(void);
 
-//ToDo: Need to check valid ranges and set them as #defines.
 /*****************************************************************************************
  * Description: Sends the relevant comms to set the polling day to values defined in the 
  *				specification
  *				
  * Arguments  : Requires the serial port connection and the required delay from
- *				0x00 is no delay
- *				0x20 is approx 20ms
- *				0x40 is approx 65ms
- *				0x60 is approx 262ms		
- *				0x60 is approx 1 Seconds
- *				0x60 is approx 4 Seconds
+ *				POLLING_DELAY_0MS		0mS polling delay (none)
+ *				POLLING_DELAY_8MS		8mS polling delay
+ *				POLLING_DELAY_16MS		16mS polling delay
+ *				POLLING_DELAY_32MS		32mS polling delay
+ *				POLLING_DELAY_65MS		65mS polling delay
+ *				POLLING_DELAY_132MS		132mS polling delay
+ *				POLLING_DELAY_262MS		262mS polling delay
+ *				POLLING_DELAY_524MS		524mS polling delay
+ *				POLLING_DELAY_1S		1S polling delay
+ *				POLLING_DELAY_2S		2S polling delay
+ *				POLLING_DELAY_4S		4S polling delay
+ *				POLLING_DELAY_8S		8S polling delay
  *
  * Returns	  : 0 - success, 1 - failure
  *  
@@ -115,7 +123,6 @@ int * readTagPage(int fd, int pg);
  * Returns	  : The block of data
  *  
  ****************************************************************************************/
-//ToDo: This needs to be converted to return a string
 int * readTagBlock(int fd, int blk);
 
 /*****************************************************************************************

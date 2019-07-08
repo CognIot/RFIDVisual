@@ -24,6 +24,7 @@
 #include <wiringPi.h>
 #include <wiringSerial.h>
 
+#include "../inc/rfid_parameters.h"
 #include "../inc/rfidPrivate.h"
 
 //Note: This contains the functions to do all the comms etc. Formatting is done
@@ -34,20 +35,20 @@
 
 char *prv_getFirmwareInfo(int conn) {
     
-	//ToDo: This function does not yet call into the RFID module.
-    int             number;
     static char     firmware_response[100];		// ToDo: need to set this size parameter to a #define rather than fixed.
 	firmware_response[0]= '\0';
     
     printf("Getting firmware information.\n");
 	
-	//wiringpi2.serialPuts(fd,"z")
-    //time.sleep(0.1)
-    //ans = ReadText(fd)
+	prv_waitForCTS(conn);
+	serialPuts(conn,"z");
+    delay(100);
+    strcpy(firmware_response,prv_getTextResult(conn));
 
-    number = rand();
-    sprintf(firmware_response, "c IDE MTRW EM400X/MC200 (MTRW_LP  V%d) DD/MM/YY) Copyright IB Technology Ltd", number);
-    printf("firmware Info is: >>%s<<\n", firmware_response);
+	//int             number;
+    //number = rand();
+    //sprintf(firmware_response, "c IDE MTRW EM400X/MC200 (MTRW_LP  V%d) DD/MM/YY) Copyright IB Technology Ltd", number);
+    //printf("firmware Info is: >>%s<<\n", firmware_response);
     
     return firmware_response;
 }
@@ -60,7 +61,7 @@ int prv_modeSetting(int fd, int mode) {
 				switch (mode)
 				{
 					case 'a':
-						waitForCTS(fd);
+						prv_waitForCTS(fd);
 
 						serialPutchar(fd, 0x76);
 						serialPutchar(fd, 0x01);  // 0x01 = H2
@@ -68,14 +69,14 @@ int prv_modeSetting(int fd, int mode) {
 
 
 					case 'b':
-						waitForCTS(fd);
+						prv_waitForCTS(fd);
 
 						serialPutchar(fd, 0x76);
 						serialPutchar(fd, 0x02);  // 0x02 = H1/S
 						break;
 
 					case 'c':
-						waitForCTS(fd);
+						prv_waitForCTS(fd);
 
 						serialPutchar(fd, 0x76);
 						serialPutchar(fd, 0x03);// 0x03 = EM/MC2000
@@ -123,6 +124,9 @@ int prv_sendResetCommand(int fd) {
     //time.sleep(0.1)
 
 	//ToDo: Tidy up and add checking
+	
+	//wait for CTS
+	
 			serialPutchar(fd, 0x46);	// this command sequence is
 			serialPutchar(fd, 0x55);	//
 			serialPutchar(fd, 0xAA);	// required to force a factory reset.
@@ -132,7 +136,7 @@ int prv_sendResetCommand(int fd) {
 	return 0;
 }
 
-int waitForCTS(int fd) {
+int prv_waitForCTS(int fd) {
 	
 	serialFlush(fd);	
 	while (digitalRead(GPIO_PIN) == HIGH)
@@ -143,22 +147,27 @@ int waitForCTS(int fd) {
 	return 0;
 }
 
-//ToDo: the first word should be lower case and start with prv_
-void GetTextResult(int fd) {
-	while (serialDataAvail (fd))
+char * prv_getTextResult(int conn) {
+	
+	static char		text_result[100];				//ToDo: This needs to be changed from a fixed number to something better
+	int				i = 0;
+	text_result[0] = '\0';
+	
+	while (serialDataAvail (conn))
 	{
-		printf ("%c", serialGetchar (fd)) ;
-		fflush (stdout) ;
+		text_result[i] = serialGetchar (conn) ;
+		printf("Char Received:%i", text_result[i]);
+		i++;
 	}
-	printf("\n\n");		//ToDo: this needs to be removed.
+	text_result[i]='\0';
+	printf("length of text response:%d\n", i);
+	return text_result;
 }
 
-//ToDo: the first word should be lower case and start with prv_
-
-int GetAntennaStatus(int fd) {
+int prv_getAntennaStatus(int fd) {
 	// Perform a firmware read to check the status of the antenna
 
-	waitForCTS(fd);
+	prv_waitForCTS(fd);
     serialPutchar(fd, 0x53);  // Send any command - this happens to be the one to check if a tag is present
 	delay(100);
 
@@ -193,16 +202,14 @@ int prv_setupWiringPi(void) {
 int prv_openCommsPort(void) {
 	
 	int			fd = 0;
-	//ToDo: Check this actually returns and works correctly
-	//ToDo: Move the magic numbers into the header file
 	
-  if ((fd = serialOpen ("/dev/serial0", 9600)) < 0)  // Try to open a connection to the serial port
+  if ((fd = serialOpen (SERIAL_PORT, SERIAL_BAUD_RATE)) < 0)  // Try to open a connection to the serial port
   {
-   fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno)) ;
-    return 1 ;
+	  fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno)) ;
+	  return 0 ;
   }
 
-  return 0;
+  return fd;
 }
 
 
@@ -217,7 +224,7 @@ int *prv_readPage(int fd, int page) {
 	
 	//ToDo: lots to do here to get it to work and probably split it up a little.
 	while (noTag == 1) {
-		waitForCTS(fd);
+		prv_waitForCTS(fd);
         serialPutchar(fd, 0x52);
  		serialPutchar(fd, 0x00); // Tag Page 00 - both H1/S and H2 should work here
 

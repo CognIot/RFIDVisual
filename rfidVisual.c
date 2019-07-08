@@ -29,10 +29,12 @@
 
 void open_serial_port( struct app_widgets *widget) {
     
+	//ToDo: Actually open the serial port!
     // Open the serial port
-    printf("opened a serial port\n");
     
-    widget->conn = 1;               // set the serial port
+    widget->conn = setupComms();
+	printf("Opened the serial port:%d\n", widget->conn);
+    
     return;
 }
 
@@ -49,10 +51,9 @@ void on_main_application_window_destroy() {
 }
 
 void on_menu_file_connect(struct app_widgets *widget) {
-    printf("In On Menu File connect");
+    printf("In On Menu File connect\n");
     
 	open_serial_port(widget);
-    printf("port opened\n");
     get_version_info(widget);
 	get_mode_info(widget);
 }

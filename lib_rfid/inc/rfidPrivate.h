@@ -14,12 +14,7 @@
 #ifndef RFIDPRIVATE_H
 #define RFIDPRIVATE_H
 
-//ToDo: Is this the right place for these to be defined???
-// set for GPIO Pin to use based on the jumper connection
-#define GPIO_PIN 1       // Jumper 1, also known as GPIO18
-// #define GPIO_PIN 0          // Jumper 2, also known as GPIO17
-// #define GPIO_PIN 2       // Jumper 3, also known as GPIO21 (Rv 1) or GPIO27 (Rv 2)
-// #define GPIO_PIN 3       // Jumper 4, also known as GPIO22
+
 
 
 /*****************************************************************************************
@@ -67,25 +62,22 @@ int prv_sendResetCommand(int conn);
  * Returns	  : 0 - success, when the tag is read
  *  
  ****************************************************************************************/
-//ToDo: This needs to be converted to prv_....
 //ToDo:  All calls to this need to be changed to pass in the serial port
-int waitForCTS(int fd);
+int prv_waitForCTS(int fd);
 
 /*****************************************************************************************
- * Description: this function reads teh data back from the given serial port
+ * Description: this function reads the data back from the given serial port
  *				
  * Arguments  : Requires the serial port connection
  *
- * Returns	  : the contents of the serial port buffer
+ * Returns	  : the contents of the serial port buffer or \0 if nothing there
  *  
  ****************************************************************************************/
-//ToDo: This needs to be converted to prv_....
-//ToDo:  All calls to this need to be changed to pass in the serial port
-void GetTextResult(int fd);
+char * prv_getTextResult(int conn);
 
-	// Perform a firmware read to check the status of the antenna
-	// requires the serial port to be given
-//ToDo: This needs to be converted to prv_....
+
+// ToDo: Perform a firmware read to check the status of the antenna
+
 //ToDo:  All calls to this need to be changed to pass in the serial port
 /*****************************************************************************************
  * Description: Performs a version read to check the antenna status
@@ -95,7 +87,7 @@ void GetTextResult(int fd);
  * Returns	  : 0 - success, 1 - failure
  *  
  ****************************************************************************************/
-int GetAntennaStatus(int fd);
+int prv_getAntennaStatus(int fd);
 
 /*****************************************************************************************
  * Description: Initialise WiringPi so we can use the GPIO on the Raspberry Pi
@@ -167,5 +159,6 @@ int prv_checkTagPresent(int fd);
  *  
  ****************************************************************************************/
 int prv_setPollingDelay(int fd, int delay);
+
 #endif /* RFIDPRIVATE_H */
 
