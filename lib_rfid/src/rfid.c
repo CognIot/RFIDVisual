@@ -110,7 +110,7 @@ int setReaderMode(int conn, char mode) {
 	if (mode_setting > 0) {
 		status = prv_modeSetting(conn, mode_setting);
 	}
-	// check response
+	// ToDo: check response
 	
 	// repeat if failed
 	return status;
@@ -118,16 +118,11 @@ int setReaderMode(int conn, char mode) {
 
 int resetReader(int conn) {
 	
-	int			status;
+	int			status = 1;
 	
-	status = prv_waitForCTS(conn);
+	prv_waitForCTS(conn);
 	
-	if (status == 0) {
-		status = prv_sendResetCommand(conn);
-	}
-	else {
-		status = 1;
-	}
+	status = prv_sendResetCommand(conn);
 		
 	return status;
 }
@@ -138,7 +133,8 @@ int setupComms(){
 	
 	prv_setupWiringPi();
 	
-	//ToDo: The bit below needs to have better failure handling...
+	//ToDo: The bit below needs to have better failure handling... It should probably return a status and 
+	//      separately a a pointer to the comms port  
 	
 	conn = prv_openCommsPort();
 	if (conn > 1) {
@@ -165,30 +161,27 @@ int readTagStatus(int fd) {
 
 	printf("\nWaiting for a tag ....\n");
 
+	// ToDo: Add a timeout loop on this one, else it will sit there for ever.
 	while (noTag == 1)
 	{
 		prv_waitForCTS(fd);
 
 		noTag = prv_checkTagPresent(fd);
 	}
-	//ToDo: No idea what to do here at present!
+	// Returns 0 if tag found, 1 if not.
 	return noTag;
 }
 
 int setPollingDelay(int fd, int pollDelay) {
 	
 	int		status = 1;
-	// validate the parameters given
-	//ToDo: Need to validate the delay given
 
 	// Set the polling delay
 	prv_waitForCTS(fd);
 
-	//ToDo: How do I all the user to set the value?
-	//		especially as it isn't used on the visual stuff
 	status = prv_setPollingDelay(fd, pollDelay);
 	
-	//ToDo: Set the return value based on 
+	//Return value based on sub function response
 	return status;
 }
 			
@@ -203,14 +196,11 @@ int * readTagPage(int fd, int pg) {
 
 int * readTagBlock(int fd, int blk) {
 	
-	int		noTag = 1;
 	int		* data;
 	
-	while (noTag == 1)
-	{
-		prv_waitForCTS(fd);
+	prv_waitForCTS(fd);
 
-		data = prv_readBlock(fd, blk);
-	}
+	data = prv_readBlock(fd, blk);
+
 	return data;
 }

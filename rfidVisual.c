@@ -23,6 +23,8 @@
 
 //ToDo: Mode in the Mode Box needs to be centralised and smaller, allowing version to be wider.
 //ToDo: Mode selection pictures needs to include words, and have only 1 selected, not all 3!
+//ToDo: How do I all the user to set the value for polling delay?
+
 /*
  * function to open and configure the serial port
  */

@@ -109,10 +109,9 @@ int setPollingDelay(int fd, int delay);
  *				
  * Arguments  : Requires the serial connection and the required page
  *
- * Returns	  : The page of data
+ * Returns	  : The page of data, which will be blank if unsuccessful
  *  
  ****************************************************************************************/
-//ToDo: What happens on failure???
 int * readTagPage(int fd, int pg);
 
 /*****************************************************************************************

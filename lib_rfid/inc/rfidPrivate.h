@@ -62,7 +62,6 @@ int prv_sendResetCommand(int conn);
  * Returns	  : 0 - success, when the tag is read
  *  
  ****************************************************************************************/
-//ToDo:  All calls to this need to be changed to pass in the serial port
 int prv_waitForCTS(int fd);
 
 /*****************************************************************************************
@@ -75,10 +74,6 @@ int prv_waitForCTS(int fd);
  ****************************************************************************************/
 char * prv_getTextResult(int conn);
 
-
-// ToDo: Perform a firmware read to check the status of the antenna
-
-//ToDo:  All calls to this need to be changed to pass in the serial port
 /*****************************************************************************************
  * Description: Performs a version read to check the antenna status
  *				

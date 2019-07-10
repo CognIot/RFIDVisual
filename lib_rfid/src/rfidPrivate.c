@@ -32,6 +32,12 @@
 
 //ToDo: Need to implement a check of the response to validate success
 
+//ToDo: Need to identify and change all the functions that return strings to use pointers instead
+
+//ToDo:  All calls that require the GPIO pin, should have it passed in and not use the global GPIO_PIN.
+
+//ToDo: waitForCTS should be at the prv level and not the user level.
+
 
 char *prv_getFirmwareInfo(int conn) {
     
@@ -56,83 +62,39 @@ char *prv_getFirmwareInfo(int conn) {
 
 int prv_modeSetting(int fd, int mode) {
 	
-	//ToDo: Set the mode, code below was copied from rfidReader.c
-	
-				switch (mode)
-				{
-					case 'a':
-						prv_waitForCTS(fd);
-
-						serialPutchar(fd, 0x76);
-						serialPutchar(fd, 0x01);  // 0x01 = H2
-						break;
-
-
-					case 'b':
-						prv_waitForCTS(fd);
-
-						serialPutchar(fd, 0x76);
-						serialPutchar(fd, 0x02);  // 0x02 = H1/S
-						break;
-
-					case 'c':
-						prv_waitForCTS(fd);
-
-						serialPutchar(fd, 0x76);
-						serialPutchar(fd, 0x03);// 0x03 = EM/MC2000
-						break;
-
-					default:
-						printf("\n\tInvalid option.  Please try again...\n\n");
-						// wait until a valid entry has been selected.
-						//ToDo: Change this to no action taken and return failure
-
-				}
-
-				delay(100);
-				while ( serialDataAvail(fd) )
-				{
-					char result;
-					result = serialGetchar(fd);
-					if (result == 0xC0)
-					{
-						printf("\n\nReader Operating Tag Mode changed .......\n\n");
-					}
-					else
-					{
-						printf("\n\nUnexpected reply >%X< \n\n", result);
-						while (serialDataAvail (fd))
-						{
-							printf (" %X", serialGetchar (fd)) ;
-							fflush (stdout) ;
-						}
-						printf("\n\n");
-					}
-				}
+	int		success = 1;
 	
 	
-	return 0;
+	serialPutchar(fd, mode);
+
+	delay(100);
+	while ( serialDataAvail(fd) )
+	{
+		char result;
+		result = serialGetchar(fd);
+		if (result == 0xC0)
+		{
+			//printf("\n\nReader Operating Tag Mode changed .......\n\n");
+			success = 0;
+		}
+		else
+		{
+			//printf("\n\nUnexpected reply >%X< \n\n", result);
+			success = 1;
+		}
+	}
+	return success;
 }
 
 int prv_sendResetCommand(int fd) {
 	
-	//ToDo: Need to implement this via serial comms.
-	
-	//wiringpi2.serialPutchar(fd, 0x46)
-    //wiringpi2.serialPutchar(fd, 0x55)
-    //wiringpi2.serialPutchar(fd, 0xAA)
-    //time.sleep(0.1)
+	serialPutchar(fd, 0x46);	// this command sequence is
+	serialPutchar(fd, 0x55);	//
+	serialPutchar(fd, 0xAA);	// required to force a factory reset.
 
-	//ToDo: Tidy up and add checking
-	
-	//wait for CTS
-	
-			serialPutchar(fd, 0x46);	// this command sequence is
-			serialPutchar(fd, 0x55);	//
-			serialPutchar(fd, 0xAA);	// required to force a factory reset.
+	delay(100);
 
-			delay(100);
-
+	// There is no way to validate receipt of the reset command, comms is ended immediately.
 	return 0;
 }
 
@@ -156,7 +118,7 @@ char * prv_getTextResult(int conn) {
 	while (serialDataAvail (conn))
 	{
 		text_result[i] = serialGetchar (conn) ;
-		printf("Char Received:%i", text_result[i]);
+		//printf("Char Received:%i", text_result[i]);
 		i++;
 	}
 	text_result[i]='\0';
@@ -180,7 +142,7 @@ int prv_getAntennaStatus(int fd) {
 	{
 		return 0;
 	}
-
+	return 1;
 }
 
 int prv_setupWiringPi(void) {
@@ -209,6 +171,7 @@ int prv_openCommsPort(void) {
 	  return 0 ;
   }
 
+	//ToDo: Validate the comms port is opened correctly or at least check what happens if it fails.
   return fd;
 }
 
@@ -220,9 +183,10 @@ int *prv_readPage(int fd, int page) {
 	static int	pagedata[100]; //maxPageSize]; //Bug: This should be set to maxPageSize, not a number
 	int			counter = 0;
 	
-	memset(pagedata, 0 , maxPageSize);
+	//ToDo: Convert the '100' above to be dynamically allocated and not fixed.
 	
-	//ToDo: lots to do here to get it to work and probably split it up a little.
+	memset(pagedata, '\0' , sizeof(pagedata));
+	
 	while (noTag == 1) {
 		prv_waitForCTS(fd);
         serialPutchar(fd, 0x52);
@@ -262,7 +226,7 @@ int * prv_readBlock(int fd, int block) {
 	static int	blockdata[100]; //maxBlockSize]; //Bug: This should be set to maxBlockSize, not a number
 	int			counter = 0;
 	
-	memset(blockdata, 0 , maxBlockSize);
+	memset(blockdata, '\0' , sizeof(blockdata));
 		
 	while (noTag ==1) {
 		serialPutchar(fd, 0x72);
@@ -289,7 +253,7 @@ int * prv_readBlock(int fd, int block) {
 			}
 		}
 	}
-	//ToDo: Need to return the string / array
+
 	return blockdata;
 }
 
@@ -297,7 +261,7 @@ int prv_checkTagPresent(int fd) {
 	int			noTag = 1;
 	serialPutchar(fd, 0x53); // Send 'S' to the PirFix
 
-	delay(100); // ??? Need to wait otherwise the command does not work
+	delay(100); 
 
 	while ( serialDataAvail(fd))  // Whilst data is being sent back from the device
 	{
@@ -306,45 +270,39 @@ int prv_checkTagPresent(int fd) {
 		if (result == 0xD6)  // confirm that the tag is present, valid and no errors
 		{
 			noTag = 0;		// set this so the outer while loop can terminate
-			printf ("\nTag present.\n\n");
+			// printf ("\nTag present.\n\n");
 		}
 	}
-	//ToDo: return 0 if tag found, 1 if not.
 	return noTag;
 }
 
 int prv_setPollingDelay(int fd, int polling_delay) {
+	
+	char		result;
+	int			success = 1;
+	
 	serialPutchar(fd, 0x50);
 	serialPutchar(fd, 0x00);
-	//serialPutchar(fd, 0x00); // 0x00 is no delay
-	//serialPutchar(fd, 0x20); // 0x20 is approx 20ms
-	//serialPutchar(fd, 0x40); // 0x40 is approx 65ms
-	serialPutchar(fd, 0x60); // 0x60 is approx 262ms
-	//serialPutchar(fd, 0x80); // 0x60 is approx 1 Seconds
-	//serialPutchar(fd, 0xA0); // 0x60 is approx 4 Seconds
+	serialPutchar(fd, polling_delay);
 
 	delay(100);
 
 	while ( serialDataAvail(fd) )
 	{
-		char result;
+		
 		result = serialGetchar(fd);
 		if (result == 0xC0)
 		{
-			printf("\n\nPolling delay changed .......\n\n");
+			//printf("\n\nPolling delay changed .......\n\n");
+			success = 0;
 		}
 		else
 		{
-			printf("\n\nUnexpected reply >%X< \n\n", result);
-			while (serialDataAvail (fd))
-			{
-				printf (" %X", serialGetchar (fd)) ;
-				fflush (stdout) ;
-			}
-			printf("\n\n");
+			//printf("\n\nUnexpected reply >%X< \n\n", result);
+			success = 1;
 		}
 	}
 	
-	return 0;
+	return success;
 
 }
