@@ -74,12 +74,13 @@ int resetReader(int conn);
 /*****************************************************************************************
  * Description: Performs all the functions to setup and check the comms are ready to use
  *				
- * Arguments  : none
+ * Arguments  : a pointer to the connection parameter
  *
  * Returns	  : 0 - success, 1 - failure
+ *				the connection or zero if failure
  *  
  ****************************************************************************************/
-int setupComms(void);
+int setupComms(int *conn);
 
 /*****************************************************************************************
  * Description: Sends the relevant comms to set the polling day to values defined in the 

@@ -83,7 +83,7 @@ int main () {
 //
     char            version[100];
 	char			option;
-	int				conn;
+	int				conn = 0;
 	int				status;
 	int				* data;
 	int				i = 0;
@@ -95,7 +95,11 @@ int main () {
 	printf("PirFlx\n");
 	printf("\n");
 	
-	conn = setupComms();
+	status = setupComms(&conn);
+	if (status != 0) {
+		printf("Unable to Open the serial port, program aborted!\n");
+		exit(1);
+	}
 
 	do {
 

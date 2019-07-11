@@ -82,7 +82,7 @@ char * prv_getTextResult(int conn);
  * Returns	  : 0 - success, 1 - failure
  *  
  ****************************************************************************************/
-int prv_getAntennaStatus(int fd);
+int prv_getAntennaStatus(int *fd);
 
 /*****************************************************************************************
  * Description: Initialise WiringPi so we can use the GPIO on the Raspberry Pi
@@ -100,12 +100,13 @@ int prv_setupWiringPi(void);
 /*****************************************************************************************
  * Description: Opens the serial port using wiring pi
  *				
- * Arguments  : none
+ * Arguments  : A pointer to the resulting connection
  *
- * Returns	  : the serial port connection or 1 if failure
+ * Returns	  : 0 if successful, 1 if failure
+ *				the serial port connection
  *  
  ****************************************************************************************/
-int prv_openCommsPort(void);
+int prv_openCommsPort(int *fd);
 
 /*****************************************************************************************
  * Description: Reads the given page from the tag (waiting for it to be detected first)

@@ -127,17 +127,16 @@ int resetReader(int conn) {
 	return status;
 }
 
-int setupComms(){
+int setupComms(int *conn){
 	
-	int			conn = 1;
-	
+	int			status = 0;
 	prv_setupWiringPi();
 	
 	//ToDo: The bit below needs to have better failure handling... It should probably return a status and 
 	//      separately a a pointer to the comms port  
 	
-	conn = prv_openCommsPort();
-	if (conn > 1) {
+	status = prv_openCommsPort(conn);
+	if (status == 0) {
 
 		// We have opened communications with the onboard Serial device
 		int antennaOK = 0;
@@ -147,13 +146,11 @@ int setupComms(){
 		antennaOK = prv_getAntennaStatus(conn);  // Check status of the antenna.
 
 		if (antennaOK != 0) {
-			conn = 1;
+			status = 1;
 		}		
 	}
 
-	//ToDo: What do I return at this stage>> should be 0 - success, 1 - failure
-	// actually returning the connection number or 1 if failure.
-	return conn;
+	return status;
 }
 
 int readTagStatus(int fd) {

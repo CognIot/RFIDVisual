@@ -29,15 +29,15 @@
  * function to open and configure the serial port
  */
 
-void open_serial_port( struct app_widgets *widget) {
+int open_serial_port( struct app_widgets *widget) {
     
-	//ToDo: Actually open the serial port!
+	int		status = 1;
     // Open the serial port
     
-    widget->conn = setupComms();
+    status = setupComms(&widget->conn);
 	printf("Opened the serial port:%d\n", widget->conn);
     
-    return;
+    return status;
 }
 
 /*

@@ -126,16 +126,16 @@ char * prv_getTextResult(int conn) {
 	return text_result;
 }
 
-int prv_getAntennaStatus(int fd) {
+int prv_getAntennaStatus(int *fd) {
 	// Perform a firmware read to check the status of the antenna
 
-	prv_waitForCTS(fd);
-    serialPutchar(fd, 0x53);  // Send any command - this happens to be the one to check if a tag is present
+	prv_waitForCTS(*fd);
+    serialPutchar(*fd, 0x53);  // Send any command - this happens to be the one to check if a tag is present
 	delay(100);
 
-	if ((serialGetchar(fd) & 0x20) == 0x20 )  // Checking bit 5.  If set, indicates antenna fault
+	if ((serialGetchar(*fd) & 0x20) == 0x20 )  // Checking bit 5.  If set, indicates antenna fault
 	{
-		printf("ERROR : ANTENNA or Eprom fault. Please check the antenna is correctly installed.\n\n");
+		printf("ERROR : ANTENNA or EPROM fault. Please check the antenna is correctly installed.\n\n");
 		return 1;  // return value set to indicate error
 	}
 	else
@@ -161,18 +161,15 @@ int prv_setupWiringPi(void) {
 
 }
 
-int prv_openCommsPort(void) {
+int prv_openCommsPort(int *fd) {
 	
-	int			fd = 0;
-	
-  if ((fd = serialOpen (SERIAL_PORT, SERIAL_BAUD_RATE)) < 0)  // Try to open a connection to the serial port
-  {
-	  fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno)) ;
-	  return 0 ;
-  }
+	if ((*fd = serialOpen (SERIAL_PORT, SERIAL_BAUD_RATE) ) < 0)  // Try to open a connection to the serial port
+	{
+		fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno)) ;
+		return 1 ;
+	}
 
-	//ToDo: Validate the comms port is opened correctly or at least check what happens if it fails.
-  return fd;
+	return 0;
 }
 
 

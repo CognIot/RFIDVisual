@@ -36,7 +36,7 @@ struct app_widgets {
 //ToDo: improve the commentary for the functions
 
 
-void open_serial_port(struct app_widgets *widget);
+int open_serial_port(struct app_widgets *widget);
 
 // calls the library and gets the version info
 void get_version_info(struct app_widgets *widget) ;
