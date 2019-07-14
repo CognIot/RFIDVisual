@@ -18,31 +18,30 @@
 #define		START_OF_VERSION_INFO	2			//The character where the version info starts, starts from zero!
 #define		MAX_FIRMWARE_LENGTH		101			//The maximum size of the firmware response PLUS 1 for \0
 #define		VALID_MODES				"abcABC"	//the valid modes for the sensor
-
-
+#define		MODE_LENGTH				1			//The length of the mode indicator in the firmware response
 
 
 
 /*****************************************************************************************
  * Description: Takes the response from the module and extracts the version info
  *				
- * Arguments  : Serial port connection
+ * Arguments  : Serial port connection, pointer to array for response, length of said array
+ *				Consider using MAX_FIRMWARE_LENGTH for length as this is the maximum possible.
  *
- * Returns	  : Returns a delimited string, max size set by MAX_FIRMWARE_LENGTH inc delimiter
+ * Returns	  : Returns 0 if successful, 1 if not.
  *  
  ****************************************************************************************/
-char *readVersion(int conn);
+int readVersion(int conn, char *answer, int max_length);
 
 /*****************************************************************************************
  * Description : Takes the response from the module and extracts the mode of operation
  * 
- * Arguments   : Serial port connection
+ * Arguments   : Serial port connection and a single char pointer for the response
  *
- * Returns	   : Returns a single char with the mode letter
- *				 Or \0 if unable to obtain it
+ * Returns	   : Returns 0 if successful, 1 if not
  *  
  ****************************************************************************************/
-char *readMode(int conn);
+int readMode(int conn, char *answer);
 
 /*****************************************************************************************
  * Description: Sets the reader mode based on VALID_MODES
@@ -113,7 +112,8 @@ int setPollingDelay(int fd, int delay);
  * Returns	  : The page of data, which will be blank if unsuccessful
  *  
  ****************************************************************************************/
-int * readTagPage(int fd, int pg);
+//ToDo: Update description
+int readTagPage(int fd, int page, int *pg, int page_size) ;
 
 /*****************************************************************************************
  * Description: Reads and returns a pointer to a block of data from the tag

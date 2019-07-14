@@ -19,64 +19,88 @@
 #include "../inc/rfid.h"
 #include "../inc/rfidPrivate.h"
 
+/* ToDo: Resolve this.
+ * Both of these are responses to the z command, but in different modes. The version info is not everything
+ * after the initial letter as I firth thought, but only the bits in brackets
+ * The rest is the mode info
+ *  Device Response in Main() : c IDE MTRW MC200/EM400X (MTRW125-87LP V1.01 20/05/15)
+ *  Device Response in Main() : b IDE MTRW H1 (MTRW125-87LP V1.01 02/06/15)
+ * 
+ * I can no longer use a fixed size for the array, I need to realloc on the fly!
+ */
 
 //Note: This contains the functions for the user functions.
 /*
  * The functions below are public functions and should be called from outside.
  * 
  */
-char *readVersion(int conn) {
+int readVersion(int conn, char *answer, int max_length) {
     
-    int				length = 0;
-    char			reply[MAX_FIRMWARE_LENGTH];
-	static char		answer[MAX_FIRMWARE_LENGTH];
-    
-	reply[0] = '\0';
-	answer[0] = '\0';
-	
+	int				j = 0;
+	char			*result = malloc (sizeof(char*));		//The firmware info is held here
+	int				*arr_length = malloc (sizeof(int*));	//The length of the resulting array
+	int				status = EXIT_FAILURE;
+
     printf("Reading version\n");
 	
-	strcpy(reply,prv_getFirmwareInfo(conn));
+	prv_getFirmwareInfo(conn, &result, arr_length);
+	printf("Returned wth data\n");
+	printf("response:%s\n", result);
+	printf(".\n");
+	//printf("length of response:%d", arr_length);
+	j=0;
+    while (result[j] != '\0')
+    {
+		printf(".\n");
+		printf("j:%d\n", j);
+        //printf("%d : %s", j, result[j]);
+		j++;
+    }
+	printf("..\n");
+	
+	if (*arr_length > MIN_FIRMWARE_LENGTH) {
+		// sufficient size of length, now extract from the start onwards.
+		printf("extracting the version info\n");
+		
+		strncpy(answer, result+START_OF_VERSION_INFO,max_length-1);
+		printf("answer:%s\n", answer);
+		status = EXIT_SUCCESS;
+	}
+    return status;
+}
+
+int readMode(int conn, char *answer) {
+    
+    int				length = 0;
+	char			*valid;
+    char			reply[MODE_LENGTH];
+	int				status = EXIT_FAILURE;
+    
+	memset(reply,'\0', sizeof(reply));
+	
+    printf("Reading Mode\n");
+	
+	prv_getFirmwareInfo(conn, reply, MAX_FIRMWARE_LENGTH);
 	printf("version info received:%s\n", reply);
 	
 	length = strlen(reply);
 	if (length > MIN_FIRMWARE_LENGTH) {
-		// sufficient size of length, now extract from the start onwards.
-		printf("extracting the version info\n");
-		
-		strcpy(answer, reply+START_OF_VERSION_INFO);
-	}
-    
-    return answer;
-}
-
-char *readMode(int conn) {
-    
-    int				i = 0;
-	char			*valid;
-    char			reply[MAX_FIRMWARE_LENGTH];
-	static char		answer[1];
-    
-	reply[0] = '\0';
-	answer[0] = '\0';
-	
-    printf("Reading Mode\n");
-	
-	strcpy(reply,prv_getFirmwareInfo(conn));
-	
-	i = strlen(reply);
-	if (i > MIN_FIRMWARE_LENGTH) {
 		// sufficient size of length, now extract the first character only.
-		strncpy(answer, reply, 1);
+		strncpy(answer, reply, MODE_LENGTH);
 		
 		// check for valid mode, if not set it back to empty!
 		valid = strchr(VALID_MODES, answer[0]);
 		if (valid == NULL) {
 			answer[0] = '\0';
+			status = EXIT_FAILURE;
+		}
+		else
+		{
+			status = EXIT_SUCCESS;
 		}
 	}
 
-    return answer;
+    return status;
 }
 
 int setReaderMode(int conn, char mode) {
@@ -110,9 +134,7 @@ int setReaderMode(int conn, char mode) {
 	if (mode_setting > 0) {
 		status = prv_modeSetting(conn, mode_setting);
 	}
-	// ToDo: check response
-	
-	// repeat if failed
+
 	return status;
 }
 
@@ -130,10 +152,8 @@ int resetReader(int conn) {
 int setupComms(int *conn){
 	
 	int			status = 0;
-	prv_setupWiringPi();
 	
-	//ToDo: The bit below needs to have better failure handling... It should probably return a status and 
-	//      separately a a pointer to the comms port  
+	prv_setupWiringPi(); 
 	
 	status = prv_openCommsPort(conn);
 	if (status == 0) {
@@ -153,42 +173,41 @@ int setupComms(int *conn){
 	return status;
 }
 
-int readTagStatus(int fd) {
+int readTagStatus(int conn) {
 	int		noTag = 1;
 
 	printf("\nWaiting for a tag ....\n");
 
-	// ToDo: Add a timeout loop on this one, else it will sit there for ever.
 	while (noTag == 1)
 	{
-		prv_waitForCTS(fd);
+		prv_waitForCTS(conn);
 
-		noTag = prv_checkTagPresent(fd);
+		noTag = prv_checkTagPresent(conn);
 	}
 	// Returns 0 if tag found, 1 if not.
 	return noTag;
 }
 
-int setPollingDelay(int fd, int pollDelay) {
+int setPollingDelay(int conn, int pollDelay) {
 	
 	int		status = 1;
 
 	// Set the polling delay
-	prv_waitForCTS(fd);
+	prv_waitForCTS(conn);
 
-	status = prv_setPollingDelay(fd, pollDelay);
+	status = prv_setPollingDelay(conn, pollDelay);
 	
 	//Return value based on sub function response
 	return status;
 }
 			
-int * readTagPage(int fd, int pg) {
+int readTagPage(int fd, int page, int *pg, int page_size) {
 
-	int			* data;
+	int			response = EXIT_FAILURE;
 
-	data = prv_readPage(fd, pg);
+	response = prv_readPage(fd, page, pg, page_size);
 	
-	return data;
+	return response;
 }
 
 int * readTagBlock(int fd, int blk) {

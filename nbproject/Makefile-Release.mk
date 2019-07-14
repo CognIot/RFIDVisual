@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/RFIDReader.o \
 	${OBJECTDIR}/charPointers.o \
+	${OBJECTDIR}/lib_rfid/src/newfile.o \
 	${OBJECTDIR}/lib_rfid/src/rfid.o \
 	${OBJECTDIR}/lib_rfid/src/rfidPrivate.o \
 	${OBJECTDIR}/newmain.o \
@@ -77,6 +78,11 @@ ${OBJECTDIR}/charPointers.o: charPointers.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/charPointers.o charPointers.c
+
+${OBJECTDIR}/lib_rfid/src/newfile.o: lib_rfid/src/newfile.c 
+	${MKDIR} -p ${OBJECTDIR}/lib_rfid/src
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lib_rfid/src/newfile.o lib_rfid/src/newfile.c
 
 ${OBJECTDIR}/lib_rfid/src/rfid.o: lib_rfid/src/rfid.c 
 	${MKDIR} -p ${OBJECTDIR}/lib_rfid/src

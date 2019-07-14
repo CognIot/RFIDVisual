@@ -38,27 +38,36 @@
 
 //ToDo: waitForCTS should be at the prv level and not the user level.
 
-
-char *prv_getFirmwareInfo(int conn) {
+// conn is the serial connection, **response is the array that the reply is in, *length is the size of the array
+int prv_getFirmwareInfo(int conn, char **response, int *length) {
     
-    static char     firmware_response[100];		// ToDo: need to set this size parameter to a #define rather than fixed.
-	firmware_response[0]= '\0';
+	int				i = 0;
+	int				*firmware_response = malloc (sizeof(char));
     
     printf("Getting firmware information.\n");
 	
 	prv_waitForCTS(conn);
 	serialPuts(conn,"z");
     delay(100);
-    strcpy(firmware_response,prv_getTextResult(conn));
+	// get data and fill the buffer, less the last which needs to be \0
+	while (serialDataAvail (conn) )
+	{
+		*response = (char*)realloc(firmware_response, (i+1) * sizeof(char));
+		firmware_response[i] = serialGetchar (conn) ;
+		//printf("Char Received:%i", text_result[i]);
+		i++;
+	}
+	printf("out of get data loop\n");
+	*response = (char*)realloc(firmware_response, (i+1) * sizeof(char));
+	firmware_response[i] = '\0';
+	printf("length:%d\n", i+1);
+	*length = i+1;			// Set one higher as it is the length, not the last entry.
+	
+	serialFlush(conn);
 
-	//int             number;
-    //number = rand();
-    //sprintf(firmware_response, "c IDE MTRW EM400X/MC200 (MTRW_LP  V%d) DD/MM/YY) Copyright IB Technology Ltd", number);
-    //printf("firmware Info is: >>%s<<\n", firmware_response);
     
-    return firmware_response;
+    return 0;
 }
-
 
 int prv_modeSetting(int fd, int mode) {
 	
@@ -109,23 +118,6 @@ int prv_waitForCTS(int fd) {
 	return 0;
 }
 
-char * prv_getTextResult(int conn) {
-	
-	static char		text_result[100];				//ToDo: This needs to be changed from a fixed number to something better
-	int				i = 0;
-	text_result[0] = '\0';
-	
-	while (serialDataAvail (conn))
-	{
-		text_result[i] = serialGetchar (conn) ;
-		//printf("Char Received:%i", text_result[i]);
-		i++;
-	}
-	text_result[i]='\0';
-	printf("length of text response:%d\n", i);
-	return text_result;
-}
-
 int prv_getAntennaStatus(int *fd) {
 	// Perform a firmware read to check the status of the antenna
 
@@ -155,7 +147,6 @@ int prv_setupWiringPi(void) {
   }
 
   pinMode(GPIO_PIN,INPUT);	// We are using GPIO_PIN as the pin to identify the "CTS" function
-  //ToDo: What happens if the command above fails??
   
   return 0;
 
@@ -172,13 +163,14 @@ int prv_openCommsPort(int *fd) {
 	return 0;
 }
 
-
-int *prv_readPage(int fd, int page) {
+int prv_readPage(int fd, int page, int *page_contents, int page_size) {
+	
+	//ToDo: This needs to return the page size, not get it!!
 	
 	int			noTag = 1;
-	int			maxPageSize = 100;
-	static int	pagedata[100]; //maxPageSize]; //Bug: This should be set to maxPageSize, not a number
+	int			pagedata[page_size];
 	int			counter = 0;
+	int			status = EXIT_FAILURE;
 	
 	//ToDo: Convert the '100' above to be dynamically allocated and not fixed.
 	
@@ -187,7 +179,7 @@ int *prv_readPage(int fd, int page) {
 	while (noTag == 1) {
 		prv_waitForCTS(fd);
         serialPutchar(fd, 0x52);
- 		serialPutchar(fd, 0x00); // Tag Page 00 - both H1/S and H2 should work here
+ 		serialPutchar(fd, page); // Tag Page 00 - both H1/S and H2 should work here
 
 		delay(100); //  Need to wait otherwise the command does not work
 
@@ -200,11 +192,14 @@ int *prv_readPage(int fd, int page) {
 				// Tag present
 				noTag = 0;
 				counter=0;
-				while (serialDataAvail(fd) && (counter < maxPageSize))
+				while (serialDataAvail(fd) && (counter < page_size))
 				{
 					pagedata[counter] = serialGetchar(fd);
 					counter ++;
 				}
+				pagedata[counter] = '\0';
+				memcpy(page_contents, pagedata, counter);
+				status = EXIT_SUCCESS;
 			}
 			else
 			{
@@ -213,7 +208,7 @@ int *prv_readPage(int fd, int page) {
 			}
 		}
 	}
-	return pagedata;
+	return status;
 }
 
 int * prv_readBlock(int fd, int block) {
@@ -302,4 +297,30 @@ int prv_setPollingDelay(int fd, int polling_delay) {
 	
 	return success;
 
+}
+
+//old functions prior to latest change
+int prv_getFirmwareInfo_old(int conn, char *response, int response_size) {
+    
+	int				i = 0;
+    char			firmware_response[response_size];
+	firmware_response[0]= '\0';
+    
+    printf("Getting firmware information.\n");
+	
+	prv_waitForCTS(conn);
+	serialPuts(conn,"z");
+    delay(100);
+	// get data and fill the buffer, less the last which needs to be \0
+	while (serialDataAvail (conn) && i < (response_size-1))
+	{
+		firmware_response[i] = serialGetchar (conn) ;
+		//printf("Char Received:%i", text_result[i]);
+		i++;
+	}
+	firmware_response[i] = '\0';
+	serialFlush(conn);
+
+    strcpy(response, firmware_response);
+    return 0;
 }

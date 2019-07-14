@@ -102,29 +102,22 @@ void on_radiobutton_toggled(GtkButton *button, struct app_widgets *widget) {
 
 void get_version_info(struct app_widgets *widget) {
 
-	//Maybe: change version from a char to a gchar
-    char            version[100];
+    char            version[101];
     int				count = 0;
-    int             connection;
+	int				response = 1;
 	GtkTextBuffer	*buffer;
 	
 	version[0] = '\0';
     
-	//ToDo: Check this routine with different sizes of strings
-    connection = widget->conn;
     do {
-        strcpy(version,readVersion(connection));
+		response = readVersion(widget->conn, version, MAX_FIRMWARE_LENGTH);
         
-        // check length of version
-        //
         printf("size of Version: %d\n", sizeof(version)/sizeof(version[0]));        // returns 100
-        printf("Version Information: >>%s<<\n", version);
         count ++;
-		// ToDo: improve the checking for a valid response
 
-    } while  ((count < 5) & (strlen(version) < 1));
+    } while  ((count < 5) && (response != EXIT_SUCCESS));
     
-    if (strlen(version) > 0) {
+    if (response == EXIT_SUCCESS) {
         printf("status is zero\n");
 		// Get and then set the buffer
 		buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (widget->w_txt_version_info_box));
@@ -142,28 +135,23 @@ void get_mode_info(struct app_widgets *widget) {
     char            mode[1];
     int				count = 0;
     int             connection;
+	int				response = EXIT_FAILURE;
 	
 	mode[0] = '\0';
     
-	//ToDo: Check this routine with different sizes of strings
     connection = widget->conn;
     do {
-        strcpy(mode,readMode(connection));
+        response = readMode(connection, mode);
         
-        // check length of version
-        //
         printf("Mode Information: >>%s<<\n", mode);
         count ++;
-		// ToDo: improve the checking for a valid response
 
-    } while  ((count < 5) & (strlen(mode) < 1));
+    } while  ((count < 5) && (response != EXIT_SUCCESS));
     
-    if (strlen(mode) > 0) {
-        printf("status is zero\n");
+    if (response == EXIT_SUCCESS) {
         gtk_entry_set_text(GTK_ENTRY(widget->w_txt_mode_box), mode);
                             
         printf("set the text\n");
-
     }
     
     return;

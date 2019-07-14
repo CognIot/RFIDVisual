@@ -34,6 +34,7 @@ void helpText(void) {
 	printf("**************************************************************************\n");
 	printf("Available commands: -\n\n");
 	printf("z - Display firmware version information\n");
+	printf("m - Display the mode information\n");
 	printf("S - Acknowledge presence of Tag\n");
 	printf("F - Perform a Factory Reset \n");
 	printf("P - Program EEPROM Polling delay \n");
@@ -81,7 +82,7 @@ void setOperatingMode(int conn) {
 
 int main () {
 //
-    char            version[100];
+    char            version[101] = "\0";
 	char			option;
 	int				conn = 0;
 	int				status;
@@ -98,9 +99,13 @@ int main () {
 	status = setupComms(&conn);
 	if (status != 0) {
 		printf("Unable to Open the serial port, program aborted!\n");
-		exit(1);
+	
+				
+		//exit(1);
 	}
 
+	readVersion(conn, version, 100);
+	
 	do {
 
 		printf("\n");
@@ -114,8 +119,15 @@ int main () {
 			case 'z': // Read the firmware version
 
 				printf("\nRead Firmware Details - Reading device..>\n\n");
-				strcpy(version,readVersion(conn));
+				readVersion(conn, version, 100);
 				printf("Version Information: >>%s<<\n", version);
+				break;
+
+			case 'm': // Read the firmware version
+
+				printf("\nRead Firmware Details - Reading device..>\n\n");
+				readMode(conn, version);
+				printf("Mode Information: >>%s<<\n", version);
 				break;
 
 			case 'S': // Read the status of the RFID device
@@ -157,14 +169,15 @@ int main () {
 
 				printf("\n\nReading Tag Data Page 00.......\n\n");
 				printf("\nWaiting for a tag ....\n");
-
-				data = readTagPage(conn, 0x00);
+				
+				// Bug: how do I know the page size I'm reading - i think this should use pointers to pointers!
+				status = readTagPage(conn, 0x00, data, 55); //(int fd, int page, int *pg, int page_size)
 				
 				//ToDo: This needs to be changed so that I read back the data and the size of it.
 				//		Put it into a structure maybe??
 				for ( i = 0; i < 100; i++ ) {
 					printf( "*(data + %d) : %d\n", i, *(data + i));
-				 }
+				}
 
 				break;
 

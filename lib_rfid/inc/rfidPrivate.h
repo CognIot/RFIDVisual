@@ -15,22 +15,25 @@
 #define RFIDPRIVATE_H
 
 
-
+// ToDo: Update description
+// conn is the serial connection, **response is the array that the reply is in, *length is the size of the array
 
 /*****************************************************************************************
- * Description: Given the connection, returns the firmware response info as a pointer.
+ * Description: Given the connection, returns the firmware response in the supplied pointer
+ *				to a maximum size.
  * 
  * eg:
  * “a IDE MTRW H2 (MTRW_LP  V1.xx) DD/MM/YY) Copyright IB Technology Ltd\0”
  * "b IDE MTRW H1 (firmware filename  V1.xx)  DD/MM/YY) Copyright message\0"
  * "c IDE MTRW EM400X/MC200 (MTRW_LP  V1.xx) DD/MM/YY) Copyright IB Technology Ltd\0”
  *				
- * Arguments  : requires the serial port connection
+ * Arguments  : requires the serial port connection, a pointer to the char array for the 
+ *				response and the maximum size allowed.
  *
  * Returns	  : 0 - success, 1 - failure
  *  
  ****************************************************************************************/
-char *prv_getFirmwareInfo(int conn);
+int prv_getFirmwareInfo(int conn, char **response, int *length);
 
 /*****************************************************************************************
  * Description: Sets the operating mode of the module.
@@ -63,16 +66,6 @@ int prv_sendResetCommand(int conn);
  *  
  ****************************************************************************************/
 int prv_waitForCTS(int fd);
-
-/*****************************************************************************************
- * Description: this function reads the data back from the given serial port
- *				
- * Arguments  : Requires the serial port connection
- *
- * Returns	  : the contents of the serial port buffer or \0 if nothing there
- *  
- ****************************************************************************************/
-char * prv_getTextResult(int conn);
 
 /*****************************************************************************************
  * Description: Performs a version read to check the antenna status
@@ -110,16 +103,16 @@ int prv_openCommsPort(int *fd);
 
 /*****************************************************************************************
  * Description: Reads the given page from the tag (waiting for it to be detected first)
- *				and returns a pointer to it
+ *				and returns a pointer to it's contents
  *				Note: If the page is invalid, the function will return an empty response
  *				
- * Arguments  : Requires the serial port connection and the page number
+ * Arguments  : Requires the serial port connection, the page number, a pointer to the 
+ *				array to store the response it and the size of that array
  *
- * Returns	  : The page of data
+ * Returns	  : EXIT_SUCCESS or EXIT_FAILURE
  *  
  ****************************************************************************************/
-//ToDo: I think this needs to be converted to return a string or maybe an array?
-int *prv_readPage(int fd, int page);
+int prv_readPage(int fd, int page, int *page_contents, int page_size);
 
 /*****************************************************************************************
  * Description: Reads the given block from the tag (waiting for it to be detected first)
@@ -156,5 +149,21 @@ int prv_checkTagPresent(int fd);
  ****************************************************************************************/
 int prv_setPollingDelay(int fd, int delay);
 
+/*****************************************************************************************
+ * Description: Given the connection, returns the firmware response in the supplied pointer
+ *				to a maximum size.
+ * 
+ * eg:
+ * “a IDE MTRW H2 (MTRW_LP  V1.xx) DD/MM/YY) Copyright IB Technology Ltd\0”
+ * "b IDE MTRW H1 (firmware filename  V1.xx)  DD/MM/YY) Copyright message\0"
+ * "c IDE MTRW EM400X/MC200 (MTRW_LP  V1.xx) DD/MM/YY) Copyright IB Technology Ltd\0”
+ *				
+ * Arguments  : requires the serial port connection, a pointer to the char array for the 
+ *				response and the maximum size allowed.
+ *
+ * Returns	  : 0 - success, 1 - failure
+ *  
+ ****************************************************************************************/
+int prv_getFirmwareInfo_old(int conn, char *response, int response_size);
 #endif /* RFIDPRIVATE_H */
 
