@@ -42,7 +42,7 @@
 int prv_getFirmwareInfo(int conn, char **response, int *length) {
     
 	int				i = 0;
-	int				*firmware_response = malloc (sizeof(char));
+	char				*firmware_response = malloc (sizeof(char));
     
     printf("Getting firmware information.\n");
 	
@@ -52,14 +52,16 @@ int prv_getFirmwareInfo(int conn, char **response, int *length) {
 	// get data and fill the buffer, less the last which needs to be \0
 	while (serialDataAvail (conn) )
 	{
-		*response = (char*)realloc(firmware_response, (i+1) * sizeof(char));
-		firmware_response[i] = serialGetchar (conn) ;
+		firmware_response = serialGetchar (conn) ;
+		*response = (char*)realloc(*response, (i+1) * sizeof(char));
 		//printf("Char Received:%i", text_result[i]);
+		(*response)[i] = (char) firmware_response;
+
 		i++;
 	}
 	printf("out of get data loop\n");
-	*response = (char*)realloc(firmware_response, (i+1) * sizeof(char));
-	firmware_response[i] = '\0';
+	//*response = (char*)realloc(firmware_response, (i+1) * sizeof(char));
+	response[i] = '\0';
 	printf("length:%d\n", i+1);
 	*length = i+1;			// Set one higher as it is the length, not the last entry.
 	
