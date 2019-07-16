@@ -42,7 +42,8 @@
 int prv_getFirmwareInfo(int conn, char **response, int *length) {
     
 	int				i = 0;
-	char				*firmware_response = malloc (sizeof(char));
+	//char			*firmware_response = malloc (sizeof(char));
+	char			firmware_response;
     
     printf("Getting firmware information.\n");
 	

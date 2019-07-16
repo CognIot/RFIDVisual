@@ -83,6 +83,7 @@ void setOperatingMode(int conn) {
 int main () {
 //
     char            version[101] = "\0";
+	char			mode[2];
 	char			option;
 	int				conn = 0;
 	int				status;
@@ -105,6 +106,7 @@ int main () {
 	}
 
 	readVersion(conn, version, 100);
+	readMode(conn, mode);
 	
 	do {
 

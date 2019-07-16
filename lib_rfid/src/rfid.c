@@ -36,7 +36,6 @@
  */
 int readVersion(int conn, char *answer, int max_length) {
     
-	int				j = 0;
 	char			*result = malloc (sizeof(char*));		//The firmware info is held here
 	int				*arr_length = malloc (sizeof(int*));	//The length of the resulting array
 	int				status = EXIT_FAILURE;
@@ -44,20 +43,13 @@ int readVersion(int conn, char *answer, int max_length) {
     printf("Reading version\n");
 	
 	prv_getFirmwareInfo(conn, &result, arr_length);
-	printf("Returned wth data\n");
+	printf("Returned with data\n");
 	printf("response:%s\n", result);
+
+	printf("length of response:%d\n", *arr_length);
 	printf(".\n");
-	//printf("length of response:%d", arr_length);
-	j=0;
-    while (result[j] != '\0')
-    {
-		printf(".\n");
-		printf("j:%d\n", j);
-        //printf("%d : %s", j, result[j]);
-		j++;
-    }
-	printf("..\n");
-	
+
+	//ToDo: Convert this to extract the data within the brackers only
 	if (*arr_length > MIN_FIRMWARE_LENGTH) {
 		// sufficient size of length, now extract from the start onwards.
 		printf("extracting the version info\n");
@@ -71,22 +63,19 @@ int readVersion(int conn, char *answer, int max_length) {
 
 int readMode(int conn, char *answer) {
     
-    int				length = 0;
+	char			*result = malloc (sizeof(char*));		//The firmware info is held here
+	int				*arr_length = malloc (sizeof(int*));	//The length of the resulting array
 	char			*valid;
-    char			reply[MODE_LENGTH];
 	int				status = EXIT_FAILURE;
     
-	memset(reply,'\0', sizeof(reply));
+	printf("Reading Mode\n");
 	
-    printf("Reading Mode\n");
+	prv_getFirmwareInfo(conn, &result, arr_length);
+	printf("version info received:%s\n", result);
 	
-	prv_getFirmwareInfo(conn, reply, MAX_FIRMWARE_LENGTH);
-	printf("version info received:%s\n", reply);
-	
-	length = strlen(reply);
-	if (length > MIN_FIRMWARE_LENGTH) {
+	if (*arr_length > MIN_FIRMWARE_LENGTH) {
 		// sufficient size of length, now extract the first character only.
-		strncpy(answer, reply, MODE_LENGTH);
+		strncpy(answer, result, MODE_LENGTH);
 		
 		// check for valid mode, if not set it back to empty!
 		valid = strchr(VALID_MODES, answer[0]);
@@ -96,10 +85,11 @@ int readMode(int conn, char *answer) {
 		}
 		else
 		{
+			answer[1] = '\0';
 			status = EXIT_SUCCESS;
 		}
 	}
-
+	printf("Version info:%s\n", answer);
     return status;
 }
 
