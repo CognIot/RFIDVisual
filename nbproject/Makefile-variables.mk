@@ -15,13 +15,13 @@ CND_PACKAGE_DIR_Debug=package
 CND_PACKAGE_NAME_Debug=rfidvisual.tar
 CND_PACKAGE_PATH_Debug=package/rfidvisual.tar
 # Release configuration
-CND_PLATFORM_Release=GNU-Linux
-CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux
+CND_PLATFORM_Release=None-Linux
+CND_ARTIFACT_DIR_Release=dist/Release/None-Linux
 CND_ARTIFACT_NAME_Release=rfidvisual
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/rfidvisual
-CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux/package
+CND_ARTIFACT_PATH_Release=dist/Release/None-Linux/rfidvisual
+CND_PACKAGE_DIR_Release=dist/Release/None-Linux/package
 CND_PACKAGE_NAME_Release=rfidvisual.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/rfidvisual.tar
+CND_PACKAGE_PATH_Release=dist/Release/None-Linux/package/rfidvisual.tar
 #
 # include compiler specific variables
 #

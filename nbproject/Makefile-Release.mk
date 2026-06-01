@@ -21,7 +21,7 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-Linux
+CND_PLATFORM=None-Linux
 CND_DLIB_EXT=so
 CND_CONF=Release
 CND_DISTDIR=dist
@@ -69,42 +69,42 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/rfidvisual: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/rfidvisual ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/RFIDReader.o: RFIDReader.c 
+${OBJECTDIR}/RFIDReader.o: RFIDReader.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/RFIDReader.o RFIDReader.c
 
-${OBJECTDIR}/charPointers.o: charPointers.c 
+${OBJECTDIR}/charPointers.o: charPointers.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/charPointers.o charPointers.c
 
-${OBJECTDIR}/lib_rfid/src/newfile.o: lib_rfid/src/newfile.c 
+${OBJECTDIR}/lib_rfid/src/newfile.o: lib_rfid/src/newfile.c
 	${MKDIR} -p ${OBJECTDIR}/lib_rfid/src
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lib_rfid/src/newfile.o lib_rfid/src/newfile.c
 
-${OBJECTDIR}/lib_rfid/src/rfid.o: lib_rfid/src/rfid.c 
+${OBJECTDIR}/lib_rfid/src/rfid.o: lib_rfid/src/rfid.c
 	${MKDIR} -p ${OBJECTDIR}/lib_rfid/src
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lib_rfid/src/rfid.o lib_rfid/src/rfid.c
 
-${OBJECTDIR}/lib_rfid/src/rfidPrivate.o: lib_rfid/src/rfidPrivate.c 
+${OBJECTDIR}/lib_rfid/src/rfidPrivate.o: lib_rfid/src/rfidPrivate.c
 	${MKDIR} -p ${OBJECTDIR}/lib_rfid/src
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lib_rfid/src/rfidPrivate.o lib_rfid/src/rfidPrivate.c
 
-${OBJECTDIR}/newmain.o: newmain.c 
+${OBJECTDIR}/newmain.o: newmain.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/newmain.o newmain.c
 
-${OBJECTDIR}/rfidReader.o: rfidReader.c 
+${OBJECTDIR}/rfidReader.o: rfidReader.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/rfidReader.o rfidReader.c
 
-${OBJECTDIR}/rfidVisual.o: rfidVisual.c 
+${OBJECTDIR}/rfidVisual.o: rfidVisual.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/rfidVisual.o rfidVisual.c
@@ -115,7 +115,6 @@ ${OBJECTDIR}/rfidVisual.o: rfidVisual.c
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/rfidvisual
 
 # Subprojects
 .clean-subprojects:
